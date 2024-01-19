@@ -1,6 +1,7 @@
 with dim_product__source AS  (
     SELECT * from `vit-lam-data.wide_world_importers.warehouse__stock_items`
     )
+
 , dim_product__rename_column AS 
     (
       SELECT 
@@ -9,6 +10,7 @@ with dim_product__source AS  (
     , brand  as brand_name
 FROM `dim_product__source`
     )
+
 , dim_product__casted AS 
     (
       SELECT 
@@ -16,8 +18,12 @@ FROM `dim_product__source`
         , cast(product_name as STRING) as	product_name
         , cast(brand_name AS STRING) as brand_name
       FROM `dim_product__rename_column`  
-    )    
-SELECT * from dim_product__casted
+    ) 
+
+SELECT product_key
+      , product_name
+      , brand_name
+from dim_product__casted 
 
 
 
