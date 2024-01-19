@@ -9,7 +9,15 @@ with dim_product__source AS  (
     , brand  as brand_name
 FROM `dim_product__source`
     )
-SELECT * from dim_product__rename_column
+, dim_product__casted AS 
+    (
+      SELECT 
+        cast(product_key as INT)    as	product_key
+        , cast(product_name as STRING) as	product_name
+        , cast(brand_name AS STRING) as brand_name
+      FROM `dim_product__rename_column`  
+    )    
+SELECT * from dim_product__casted
 
 
 
