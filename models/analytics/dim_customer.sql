@@ -15,4 +15,6 @@ FROM `vit-lam-data.wide_world_importers.sales__customers`
         , cast(customer_name as string) as customer_name
   FROM `dim_customer__rename`
 )
-SELECT * from `dim_customer__cast`
+SELECT customer_key
+      , customer_name
+ from `dim_customer__cast`
