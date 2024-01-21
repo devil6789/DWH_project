@@ -22,5 +22,11 @@ FROM `vit-lam-data.wide_world_importers.sales__customers`
 SELECT dim_customer.customer_key
       , dim_customer.customer_name
       , dim_customer.customer_category_key
+      , stg_dim_category.customer_category_name
       , dim_customer.buying_group_key
+      , stg_dim_buying_group.buying_group_name
  from `dim_customer__cast` as dim_customer
+left join {{ ref('stg_dim_sales_customer_category') }} as stg_dim_category
+on dim_customer.customer_category_key = stg_dim_category.customer_category_key
+left join {{ ref("stg_dim_sales_buying_group") }} as stg_dim_buying_group
+on dim_customer.buying_group_key = stg_dim_buying_group.buying_group_key
