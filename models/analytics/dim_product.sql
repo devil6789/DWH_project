@@ -38,12 +38,13 @@ FROM `dim_product__source`
 SELECT dim_product.product_key
       , dim_product.product_name
       , dim_product.supplier_key
-      , dim_supplier.supplier_name
-      , dim_product.brand_name
+      , coalesce(dim_supplier.supplier_name, 'Undefined') as supplier_name
+      , coalesce(dim_product.brand_name, 'Undefined') as brand_name
       , dim_product.is_chiller_stock
 from dim_product__handle_boolean as dim_product
 left join {{ ref('dim_supplier') }} as dim_supplier
 on dim_product.supplier_key = dim_supplier.supplier_key
+
 
 
 
