@@ -35,13 +35,14 @@ with fact_sales_order_line__source AS (
 
 
 SELECT 
-   fact_line.sales_order_line_key
+      fact_line.sales_order_line_key
     , fact_line.sales_order_key 
     , fact_line.product_key
     , fact_header.customer_key
     , fact_line.quantity
     , fact_line.unit_price
     , fact_line.gross_amount
+    , fact_header.picked_by_person_key
 FROM `fact_sales_order_line__calculate` as fact_line
 left join {{ ref('stg_fact_sales_order') }} as fact_header
 on fact_line.sales_order_key = fact_header.sales_order_key
