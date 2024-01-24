@@ -24,6 +24,9 @@ FROM `dim_person__cast_type`
 
 UNION ALL
   SELECT 0 as person_key, 'Undefined' as full_name
+UNION ALL
+  SELECT -1 as person_key, 'Invalid' as full_name
+
 )
 
 SELECT 
