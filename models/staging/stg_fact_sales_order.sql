@@ -22,5 +22,6 @@ FROM `vit-lam-data.wide_world_importers.sales__orders`
 SELECT 
       sales_order_key	
       , customer_key
-      , picked_by_person_key
+      , coalesce(picked_by_person_key, 0) as picked_by_person_key
 FROM `fact_sales_order__cast_type`
+
