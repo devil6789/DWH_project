@@ -16,8 +16,20 @@ FROM `vit-lam-data.wide_world_importers.application__people`
   FROM `dim_person__rename`
 )
 
-SELECT  
+, dim_person__add_undefined_record AS (
+  SELECT  
     person_key
     , full_name
 FROM `dim_person__cast_type`
+
+UNION ALL
+  SELECT 0 as person_key, 'Undefined' as full_name
+)
+
+SELECT 
+    person_key
+    , full_name
+FROM `dim_person__add_undefined_record`
+
+
 
