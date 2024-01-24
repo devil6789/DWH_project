@@ -32,12 +32,13 @@ FROM `vit-lam-data.wide_world_importers.sales__customers`
           END as is_on_credit_hold
   FROM `dim_customer__cast`
 )
+
 SELECT dim_customer.customer_key
       , dim_customer.customer_name
       , dim_customer.customer_category_key
-      , stg_dim_category.customer_category_name
+      , coalesce(stg_dim_category.customer_category_name, 'Undefined') AS customer_category_name 
       , dim_customer.buying_group_key
-      , stg_dim_buying_group.buying_group_name
+      , coalesce(stg_dim_buying_group.buying_group_name, 'Undefined') AS buying_group_name 
       , dim_customer.is_on_credit_hold
  from `dim_customer__handle_boolean` as dim_customer
   LEFT JOIN {{ ref('stg_dim_customer_category') }} as stg_dim_category
