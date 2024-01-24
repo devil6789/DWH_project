@@ -9,6 +9,7 @@ FROM `vit-lam-data.wide_world_importers.sales__customers`
         ,customer_name AS	customer_name
         , customer_category_id as customer_category_key
         , buying_group_id AS buying_group_key
+        , is_on_credit_hold
   FROM `dim_customer__source`       
 )
 
@@ -16,7 +17,8 @@ FROM `vit-lam-data.wide_world_importers.sales__customers`
   select cast(customer_key  AS int) as customer_key
         , cast(customer_name as string) as customer_name
         , cast(customer_category_key as int) as customer_category_key
-        , cast(buying_group_key as int) as buying_group_key 
+        , cast(buying_group_key as int) as buying_group_key
+        , cast(is_on_credit_hold AS BOOLEAN) as is_on_credit_hold 
   FROM `dim_customer__rename`
 )
 SELECT dim_customer.customer_key
@@ -25,6 +27,7 @@ SELECT dim_customer.customer_key
       , stg_dim_category.customer_category_name
       , dim_customer.buying_group_key
       , stg_dim_buying_group.buying_group_name
+      , dim_customer.is_on_credit_hold
  from `dim_customer__cast` as dim_customer
   LEFT JOIN {{ ref('stg_dim_customer_category') }} as stg_dim_category
     ON dim_customer.customer_category_key = stg_dim_category.customer_category_key
