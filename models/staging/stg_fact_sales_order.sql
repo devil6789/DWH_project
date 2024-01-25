@@ -17,7 +17,7 @@ FROM `vit-lam-data.wide_world_importers.sales__orders`
         cast(sales_order_key as int) as sales_order_key
         , cast(customer_key as int) as customer_key
         , CAST(picked_by_person_key as int) as picked_by_person_key
-        , cast(order_date AS TIMESTAMP) as order_date
+        , cast(order_date AS date) as order_date
   FROM `fact_sales_order__rename_column`       
 )
 
