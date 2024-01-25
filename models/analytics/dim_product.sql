@@ -35,6 +35,7 @@ FROM `dim_product__source`
   FROM `dim_product__casted`
 )
 
+, dim_product__add_row_undefined_invalid AS (
 SELECT dim_product.product_key
       , dim_product.product_name
       , dim_product.supplier_key
@@ -44,7 +45,19 @@ SELECT dim_product.product_key
 from dim_product__handle_boolean as dim_product
 left join {{ ref('dim_supplier') }} as dim_supplier
 on dim_product.supplier_key = dim_supplier.supplier_key
+UNION ALL 
+SELECT 0 as product_key, 'Undefined' as product_name, 0 as supplier_key, 'Undefined' as supplier_name, 'Undefined' as brand_name, 'Undefined' as is_chiller_stock
+UNION ALL 
+SELECT -1 as product_key, 'Invalid' as product_name, -1 as supplier_key, 'Invalid' as supplier_name, 'Invalid' as brand_name, 'Invalid' as is_chiller_stock
+)
 
+SELECT product_key	
+       , product_name	
+       , supplier_key	
+       , supplier_name	
+       , brand_name	
+       , is_chiller_stock
+FROM `dim_product__add_row_undefined_invalid`
 
 
 
