@@ -14,6 +14,16 @@ WITH dim_sales_buying_group__source AS (
   FROM `dim_sales_buying_group__rename`
 )
 
+, stg_dim_buying_group__add_undefined_invalid_value AS (
 select buying_group_key
       ,buying_group_name
 FROM `dim_sales_buying_group__cast_type`
+UNION ALL 
+select 0 as buying_group_key, 'Undefined' AS buying_group_name
+UNION ALL 
+select -1 as buying_group_key, 'Invalid' AS buying_group_name
+)
+
+SELECT buying_group_key
+      ,buying_group_name
+FROM `stg_dim_buying_group__add_undefined_invalid_value`
