@@ -33,6 +33,7 @@ FROM `vit-lam-data.wide_world_importers.sales__customers`
   FROM `dim_customer__cast`
 )
 
+, dim_customer__add_row_undefined_invald AS (
 SELECT dim_customer.customer_key
       , dim_customer.customer_name
       , dim_customer.customer_category_key
@@ -45,4 +46,18 @@ SELECT dim_customer.customer_key
     ON dim_customer.customer_category_key = stg_dim_category.customer_category_key
   LEFT JOIN {{ ref("stg_dim_buying_group") }} as stg_dim_buying_group
     ON dim_customer.buying_group_key = stg_dim_buying_group.buying_group_key
+Union ALL
+SELECT 0 as customer_key, 'Undefined' as customer_category_name, 0 as customer_category_key, 'Undefined' as customer_category_name, NULL as buying_group_key, 'Undefined' as buying_group_name, 'Undefined' as is_on_credit_hold
+Union ALL 
+SELECT -1 as customer_key, 'Invalid' as customer_category_name, -1 as customer_category_key, 'Invalid' as customer_category_name, -1 as buying_group_key, 'Invalid' as buying_group_name, 'Invalid' as is_on_credit_hold
+)
 
+SELECT 
+      customer_key
+      , customer_name
+      , customer_category_key
+      , customer_category_name
+      , buying_group_key
+      , buying_group_name
+      , is_on_credit_hold
+FROM `dim_customer__add_row_undefined_invald`
