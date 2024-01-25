@@ -57,7 +57,7 @@ SELECT
       , customer_name
       , customer_category_key
       , customer_category_name
-      , buying_group_key
+      , coalesce(buying_group_key, 0) as buying_group_key
       , buying_group_name
       , is_on_credit_hold
 FROM `dim_customer__add_row_undefined_invald`
