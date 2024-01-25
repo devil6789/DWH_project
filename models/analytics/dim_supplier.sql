@@ -15,6 +15,15 @@ with dim_supplier__source AS (
   FROM `dim_supplier__rename`  
 )
 
+, dim_supplier__add_undefined_invalid_value AS (
 SELECT supplier_key
        , supplier_name
 FROM `dim_supplier__cast_type`
+UNION ALL 
+select 0 as supplier_key, 'Undefined' AS supplier_name
+UNION ALL 
+select -1 as supplier_key, 'Invalid' AS supplier_name
+)
+SELECT supplier_key
+       , supplier_name 
+FROM `dim_supplier__add_undefined_invalid_value`
