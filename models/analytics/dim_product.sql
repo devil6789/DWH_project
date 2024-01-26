@@ -53,10 +53,11 @@ SELECT -1 as product_key, 'Invalid' as product_name, -1 as supplier_key, 'Invali
 
 SELECT product_key	
        , product_name	
+       , is_chiller_stock
+       , brand_name
        , supplier_key	
        , supplier_name	
-       , brand_name	
-       , is_chiller_stock
+              
 FROM `dim_product__add_row_undefined_invalid`
 
 

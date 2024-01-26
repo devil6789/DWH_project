@@ -55,9 +55,9 @@ SELECT -1 as customer_key, 'Invalid' as customer_category_name, -1 as customer_c
 SELECT 
       customer_key
       , customer_name
+      , is_on_credit_hold
       , customer_category_key
       , customer_category_name
       , coalesce(buying_group_key, 0) as buying_group_key
-      , buying_group_name
-      , is_on_credit_hold
+      , buying_group_name     
 FROM `dim_customer__add_row_undefined_invald`

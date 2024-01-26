@@ -39,11 +39,12 @@ SELECT
     , fact_line.sales_order_key 
     , fact_line.product_key
     , coalesce(fact_header.customer_key, -1) as customer_key
+    , coalesce(fact_header.picked_by_person_key, -1) as picked_by_person_key
+    , fact_header.order_date
     , fact_line.quantity
     , fact_line.unit_price
     , fact_line.gross_amount
-    , coalesce(fact_header.picked_by_person_key, -1) as picked_by_person_key
-    , fact_header.order_date
+    
 FROM `fact_sales_order_line__calculate` as fact_line
 left join {{ ref('stg_fact_sales_order') }} as fact_header
 on fact_line.sales_order_key = fact_header.sales_order_key
