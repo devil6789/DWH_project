@@ -70,5 +70,25 @@ WITH dim_person__source AS (
     FROM `dim_person__cast_type`
 )
 
-SELECT * FROM `dim_person__handle_boolean`
+, dim_person__add_undefined_invalid AS (
+    SELECT *
+    FROM `dim_person__handle_boolean`
 
+    UNION ALL 
+    SELECT 0, 'Undefined' , 'Undefined' , 'Undefined' , 'Undefined' , 'Undefined', 'Undefined', 'Undefined', 'Undefined'
+
+    UNION ALL 
+    SELECT -1, 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid'
+)
+
+    SELECT
+        person_key
+        , full_name
+        , preferred_name
+        ,	search_name
+        ,	is_permitted_to_logon
+        , is_external_logon_provider
+        , is_system_user
+        , is_employee
+        ,	is_salesperson
+    FROM `dim_person__add_undefined_invalid`
