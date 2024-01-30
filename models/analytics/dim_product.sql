@@ -1,65 +1,32 @@
-with dim_product__source AS  (
-    SELECT * from `vit-lam-data.wide_world_importers.warehouse__stock_items`
-    )
-
-, dim_product__rename_column AS 
-    (
-      SELECT 
-      stock_item_id  as	product_key
-    , stock_item_name  as	product_name
-    , supplier_id as supplier_key
-    , brand  as brand_name
-    , is_chiller_stock as is_chiller_stock_boolean
-FROM `dim_product__source`
-    )
-
-, dim_product__casted AS 
-    (
-      SELECT 
-        cast(product_key as INT)    as	product_key
-        , cast(product_name as STRING) as	product_name
-        , cast(supplier_key as INT) as supplier_key
-        , cast(brand_name AS STRING) as brand_name
-        , cast(is_chiller_stock_boolean as BOOLEAN) as is_chiller_stock_boolean
-      FROM `dim_product__rename_column`  
-    ) 
-
-, dim_product__handle_boolean AS (
-  SELECT *,
-      CASE 
-      when is_chiller_stock_boolean is TRUE then 'Chiller Stock'
-      when is_chiller_stock_boolean is FALSE then 'Not Chiller Stock'
-      when is_chiller_stock_boolean is NULL then 'Undefined'
-      else 'Invalid'
-      end AS is_chiller_stock
-  FROM `dim_product__casted`
+WITH dim_product__source AS (
+    SELECT *
+    FROM `vit-lam-data.wide_world_importers.warehouse__stock_items`
 )
 
-, dim_product__add_row_undefined_invalid AS (
-SELECT dim_product.product_key
-      , dim_product.product_name
-      , dim_product.supplier_key
-      , coalesce(dim_supplier.supplier_name, 'Undefined') as supplier_name
-      , coalesce(dim_product.brand_name, 'Undefined') as brand_name
-      , dim_product.is_chiller_stock
-from dim_product__handle_boolean as dim_product
-left join {{ ref('dim_supplier') }} as dim_supplier
-on dim_product.supplier_key = dim_supplier.supplier_key
-UNION ALL 
-SELECT 0 as product_key, 'Undefined' as product_name, 0 as supplier_key, 'Undefined' as supplier_name, 'Undefined' as brand_name, 'Undefined' as is_chiller_stock
-UNION ALL 
-SELECT -1 as product_key, 'Invalid' as product_name, -1 as supplier_key, 'Invalid' as supplier_name, 'Invalid' as brand_name, 'Invalid' as is_chiller_stock
+, dim_product__rename AS (
+    SELECT
+        stock_item_id AS product_key
+        , stock_item_name AS product_name
+        , brand AS brand_name
+        , size AS product_size
+        , quantity_per_outer
+        , tax_rate
+        , unit_price
+        , recommended_retail_price
+    FROM `dim_product__source`
 )
 
-SELECT product_key	
-       , product_name	
-       , is_chiller_stock
-       , brand_name
-       , supplier_key	
-       , supplier_name	
-              
-FROM `dim_product__add_row_undefined_invalid`
+, dim_product__cast_type AS (
+    SELECT
+        CAST(product_key AS INT) AS product_key 
+        , CAST(product_name AS STRING) AS product_name
+        , CAST(brand_name AS STRING) AS brand_name
+        , CAST(product_size AS STRING) AS product_size 
+        , CAST(quantity_per_outer AS INT) AS quantity_per_outer 
+        , CAST(tax_rate AS NUMERIC) AS tax_rate
+        , CAST(unit_price AS NUMERIC) AS unit_price
+        , CAST(recommended_retail_price AS NUMERIC) AS recommended_retail_price  
+    FROM `dim_product__rename`    
+)
 
-
-
-
+SELECT * FROM dim_product__cast_type
