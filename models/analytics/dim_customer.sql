@@ -18,6 +18,7 @@ WITH dim_customer__source AS (
         , delivery_method_id AS delivery_method_key
         , delivery_city_id AS delivery_city_key
         , postal_city_id AS postal_city_key
+        , primary_contact_person_id AS primary_contact_person_key
     FROM `dim_customer__source`
 )
 
@@ -35,7 +36,8 @@ WITH dim_customer__source AS (
         , CAST(buying_group_key AS INT) AS buying_group_key
         , CAST(delivery_method_key AS INT) AS delivery_method_key 
         , CAST(delivery_city_key AS INT) AS delivery_city_key  
-        , CAST(postal_city_key AS INT) AS postal_city_key  
+        , CAST(postal_city_key AS INT) AS postal_city_key
+        , CAST(primary_contact_person_key AS INT) AS primary_contact_person_key  
     FROM `dim_customer__rename`
 )
 
@@ -64,6 +66,7 @@ WITH dim_customer__source AS (
         , delivery_method_key
         , delivery_city_key
         , postal_city_key
+        , primary_contact_person_key
     FROM `dim_customer__cast_type`
 )
 
@@ -96,8 +99,8 @@ WITH dim_customer__source AS (
         , dim_postal_city.sales_territory AS postal_sales_territory
         , dim_postal_city.country_key AS postal_country_key
         , dim_postal_city.country_name AS postal_country_name      
-        
-        
+        , dim_customer.primary_contact_person_key
+        , dim_primary_contact_person.full_name
         
                 
         
@@ -116,3 +119,6 @@ WITH dim_customer__source AS (
       
       LEFT JOIN {{ ref("stg_dim_city") }} AS dim_postal_city
         ON dim_customer.postal_city_key = dim_postal_city.city_key
+
+      LEFT JOIN {{ ref("dim_person") }} AS dim_primary_contact_person
+        ON dim_customer.primary_contact_person_key = dim_primary_contact_person.person_key
