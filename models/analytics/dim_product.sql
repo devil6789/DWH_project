@@ -59,9 +59,9 @@ WITH dim_product__source AS (
         , dim_product.colour_key
         , dim_colour.colour_name
         , dim_product.unit_package_key AS unit_package_type_key
-        , dim_package_type1.package_type_name AS unit_package_type_name
+        , dim_unit_package_type.package_type_name AS unit_package_type_name
         , dim_product.outer_package_key AS outer_package_type_key
-        , dim_package_type2.package_type_name AS outer_package_type_name
+        , dim_outer_package_type.package_type_name AS outer_package_type_name
     FROM `dim_product__cast_type` AS dim_product
       LEFT JOIN {{ ref("stg_dim_supplier") }} AS dim_supplier
         ON dim_product.supplier_key = dim_supplier.supplier_key
@@ -69,8 +69,9 @@ WITH dim_product__source AS (
       LEFT JOIN {{ ref("stg_dim_colour") }} AS dim_colour 
         ON dim_product.colour_key = dim_colour.colour_key
 
-      LEFT JOIN {{ ref("dim_package_type") }} AS dim_package_type1
-        ON dim_product.unit_package_key = dim_package_type1.package_type_key
-      LEFT JOIN {{ ref("dim_package_type") }} AS dim_package_type2
-        ON dim_product.outer_package_key = dim_package_type2.package_type_key
+      LEFT JOIN {{ ref("dim_package_type") }} AS dim_unit_package_type
+        ON dim_product.unit_package_key = dim_unit_package_type.package_type_key
+        
+      LEFT JOIN {{ ref("dim_package_type") }} AS dim_outer_package_type
+        ON dim_product.outer_package_key = dim_outer_package_type.package_type_key
         
