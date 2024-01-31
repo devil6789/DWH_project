@@ -14,6 +14,8 @@ WITH dim_customer__source AS (
         , credit_limit
         , account_opened_date
         , customer_category_id AS customer_category_key
+        , buying_group_id AS buying_group_key
+        , delivery_method_id AS delivery_method_key
     FROM `dim_customer__source`
 )
 
@@ -27,7 +29,9 @@ WITH dim_customer__source AS (
         , CAST(customer_payment_days AS INT) AS customer_payment_days 
         , CAST(credit_limit AS NUMERIC) AS credit_limit
         , CAST(account_opened_date AS DATE) AS account_opened_date
-        , CAST(customer_category_key AS INT) AS customer_category_key        
+        , CAST(customer_category_key AS INT) AS customer_category_key
+        , CAST(buying_group_key AS INT) AS buying_group_key
+        , CAST(delivery_method_key AS INT) AS delivery_method_key     
     FROM `dim_customer__rename`
 )
 
@@ -52,6 +56,8 @@ WITH dim_customer__source AS (
         , credit_limit
         , account_opened_date
         , customer_category_key
+        , buying_group_key
+        , delivery_method_key
     FROM `dim_customer__cast_type`
 )
 
@@ -66,6 +72,16 @@ WITH dim_customer__source AS (
         , dim_customer.account_opened_date
         , dim_customer.customer_category_key
         , dim_customer_category.customer_category_name
+        , dim_customer.buying_group_key
+        , dim_customer_buying_group.buying_group_name
+        , dim_customer.delivery_method_key
+        , dim_delivery_method.delivery_method_name
     FROM `dim_customer__handle_boolean` AS dim_customer
       LEFT JOIN {{ ref("stg_dim_customer_category") }} AS dim_customer_category
         ON dim_customer.customer_category_key = dim_customer_category.customer_category_key
+
+      LEFT JOIN {{ ref("stg_dim_customer_buying_group") }} AS dim_customer_buying_group
+        ON dim_customer.buying_group_key = dim_customer_buying_group.buying_group_key
+
+      LEFT JOIN {{ ref("stg_dim_delivery_method") }} AS dim_delivery_method
+        ON dim_customer.delivery_method_key = dim_delivery_method.delivery_method_key
