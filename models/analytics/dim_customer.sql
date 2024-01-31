@@ -16,6 +16,7 @@ WITH dim_customer__source AS (
         , customer_category_id AS customer_category_key
         , buying_group_id AS buying_group_key
         , delivery_method_id AS delivery_method_key
+        , delivery_city_id AS delivery_city_key
     FROM `dim_customer__source`
 )
 
@@ -31,7 +32,8 @@ WITH dim_customer__source AS (
         , CAST(account_opened_date AS DATE) AS account_opened_date
         , CAST(customer_category_key AS INT) AS customer_category_key
         , CAST(buying_group_key AS INT) AS buying_group_key
-        , CAST(delivery_method_key AS INT) AS delivery_method_key     
+        , CAST(delivery_method_key AS INT) AS delivery_method_key 
+        , CAST(delivery_city_key AS INT) AS delivery_city_key    
     FROM `dim_customer__rename`
 )
 
@@ -58,6 +60,7 @@ WITH dim_customer__source AS (
         , customer_category_key
         , buying_group_key
         , delivery_method_key
+        , delivery_city_key
     FROM `dim_customer__cast_type`
 )
 
@@ -76,6 +79,13 @@ WITH dim_customer__source AS (
         , dim_customer_buying_group.buying_group_name
         , dim_customer.delivery_method_key
         , dim_delivery_method.delivery_method_name
+        , dim_customer.delivery_city_key
+        , dim_delivery_city.city_name AS delivery_city_name
+        , dim_delivery_city.state_province_key AS delivery_state_province_key
+        , dim_delivery_city.state_province_name AS delivery_state_province_name
+        , dim_delivery_city.sales_territory AS delivery_sales_territory
+        , dim_delivery_city.country_key AS delivery_country_key
+        , dim_delivery_city.country_name AS delivery_country_name
     FROM `dim_customer__handle_boolean` AS dim_customer
       LEFT JOIN {{ ref("stg_dim_customer_category") }} AS dim_customer_category
         ON dim_customer.customer_category_key = dim_customer_category.customer_category_key
@@ -85,3 +95,6 @@ WITH dim_customer__source AS (
 
       LEFT JOIN {{ ref("stg_dim_delivery_method") }} AS dim_delivery_method
         ON dim_customer.delivery_method_key = dim_delivery_method.delivery_method_key
+
+      LEFT JOIN {{ ref("stg_dim_city") }} AS dim_delivery_city
+        ON dim_customer.delivery_city_key = dim_delivery_city.city_key
