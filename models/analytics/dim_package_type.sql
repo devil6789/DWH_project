@@ -17,7 +17,22 @@ WITH dim_package_type__source AS (
     FROM `dim_package_type__rename`
 )
 
+, dim_package_type__add_undefined_invalid AS (
     SELECT
         package_type_key
         , package_type_name
     FROM `dim_package_type__cast_type`
+
+    UNION ALL
+    SELECT 0, 'Undefined'
+
+    UNION ALL
+    SELECT -1, 'Invalid'
+)
+
+    SELECT
+        COALESCE(package_type_key, 0) AS package_type_key
+        , COALESCE(package_type_name, 'Undefined') AS package_type_name
+    FROM `dim_package_type__add_undefined_invalid`
+
+    
