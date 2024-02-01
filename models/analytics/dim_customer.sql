@@ -76,6 +76,7 @@ WITH dim_customer__source AS (
     FROM `dim_customer__cast_type`
 )
 
+, dim_customer__join AS (
     SELECT
         dim_customer.customer_key
         , dim_customer.customer_name
@@ -137,3 +138,87 @@ WITH dim_customer__source AS (
 
       LEFT JOIN dim_customer__handle_boolean AS dim_bill_to_customer
         ON  dim_customer.bill_to_customer_key = dim_bill_to_customer.customer_key
+)
+
+, dim_customer__add_invald_undefined AS (    
+    SELECT *
+    FROM `dim_customer__join`
+
+    UNION ALL
+    SELECT 0, 'Undefined', 'Undefined', 'Undefined', 0, 0, 0, '2012-01-01', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined'
+
+    UNION ALL
+    SELECT -1, 'Invalid', 'Invalid', 'Invalid', -1, -1, -1, '2012-01-01', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid'
+
+)
+
+    SELECT
+        COALESCE(customer_key, 0) AS customer_key
+        , COALESCE(customer_name, 'Undefined') AS customer_name
+        , COALESCE(is_statement_sent, 'Undefined') AS is_statement_sent
+        , COALESCE(is_on_credit_hold, 'Undefined') AS is_on_credit_hold
+        , COALESCE(standard_discount_percentage, 0) AS standard_discount_percentage
+        , COALESCE(customer_payment_days, 0) AS customer_payment_days
+        , COALESCE(credit_limit, 0) AS credit_limit
+        , COALESCE(account_opened_date, '2012-01-01') AS account_opened_date 
+        , COALESCE(customer_category_key, 0) AS customer_category_key
+        , COALESCE(customer_category_name, 'Undefined') AS customer_category_name
+        , COALESCE(buying_group_key, 0) AS buying_group_key
+        , COALESCE(buying_group_name, 'Undefined') AS buying_group_name
+        , COALESCE(delivery_method_key, 0) AS delivery_method_key
+        , COALESCE(delivery_method_name, 'Undefined') AS delivery_method_name
+        , COALESCE(delivery_city_key, 0) AS delivery_city_key    
+        , COALESCE(delivery_city_name, 'Undefined') AS delivery_city_name
+        , COALESCE(delivery_state_province_key, 0) AS delivery_state_province_key
+        , COALESCE(delivery_state_province_name, 'Undefined') AS delivery_state_province_name
+        , COALESCE(delivery_sales_territory, 'Undefined') AS delivery_sales_territory
+        , COALESCE(delivery_country_key, 0) AS delivery_country_key
+        , COALESCE(delivery_country_name, 'Undefined') AS delivery_country_name   
+        , COALESCE(postal_city_key, 0) AS postal_city_key
+        , COALESCE(postal_city_name, 'Undefined') AS postal_city_name
+        , COALESCE(postal_state_province_key, 0) AS postal_state_province_key
+        , COALESCE(postal_state_province_name, 'Undefined') AS postal_state_province_name
+        , COALESCE(postal_sales_territory, 'Undefined') AS postal_sales_territory
+        , COALESCE(postal_country_key, 0) AS postal_country_key
+        , COALESCE(postal_country_name, 'Undefined') AS postal_country_name 
+        , COALESCE(primary_contact_person_key, 0) AS primary_contact_person_key       
+        , COALESCE(primary_full_name, 'Undefined') AS primary_full_name         
+        , COALESCE(alternate_contact_person_key, 0) AS alternate_contact_person_key        
+        , COALESCE(alternate_full_name, 'Undefined') AS alternate_full_name         
+        , COALESCE(bill_to_customer_key, 0) AS bill_to_customer_key         
+        , COALESCE(bill_to_customer_name, 'Undefined') AS bill_to_customer_name
+    FROM `dim_customer__add_invald_undefined`       
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+
+
+
+
+    
