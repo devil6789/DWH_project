@@ -77,6 +77,7 @@ WITH dim_product__source AS (
         ON dim_product.outer_package_key = dim_outer_package_type.package_type_key
 )
 
+, dim_product__add_undefined_invalid AS (
     SELECT *
     FROM `dim_product__join`
 
@@ -85,5 +86,31 @@ WITH dim_product__source AS (
 
     UNION ALL 
     SELECT -1, 'Invalid', 'Invalid', 'Invalid', -1, -1, -1, -1, -1, -1, 'Invalid', -1, -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid'
+)
+
+    SELECT 
+        COALESCE(product_key, 0) AS product_key
+        , COALESCE(product_name, 'Undefined') AS product_name
+        , COALESCE(brand_name, 'Undefined') AS brand_name
+        , COALESCE(product_size, 'Undefined') AS product_size
+        , COALESCE(quantity_per_outer, 0) AS quantity_per_outer
+        , COALESCE(tax_rate, 0) AS tax_rate
+        , COALESCE(unit_price, 0) AS unit_price
+        , COALESCE(recommended_retail_price, 0) AS recommended_retail_price
+        , COALESCE(lead_time_days, 0) AS lead_time_days
+        , COALESCE(supplier_key, 0) AS supplier_key
+        , COALESCE(supplier_name, 'Undefined') AS supplier_name
+        , COALESCE(supplier_payment_days, 0) AS supplier_payment_days
+        , COALESCE(supplier_category_key, 0) AS supplier_category_key
+        , COALESCE(supplier_category_name, 'Undefined') AS supplier_category_name
+        , COALESCE(delivery_method_key, 0) AS delivery_method_key
+        , COALESCE(delivery_method_name, 'Undefined') AS delivery_method_name
+        , COALESCE(colour_key, 0) AS colour_key
+        , COALESCE(colour_name, 'Undefined') AS colour_name
+        , COALESCE(unit_package_type_key, 0) AS unit_package_type_key
+        , COALESCE(unit_package_type_name, 'Undefined') AS unit_package_type_name
+        , COALESCE(outer_package_type_key, 0) AS outer_package_type_key
+        , COALESCE(outer_package_type_name, 'Undefined') AS outer_package_type_name
+    FROM `dim_product__add_undefined_invalid`
     
         
