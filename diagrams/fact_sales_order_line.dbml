@@ -1,0 +1,96 @@
+Table fact_sales_order_line {
+  sales_order_line_key int [pk]
+  description STRING
+  sales_order_key INT
+  product_key INT
+  package_type_key INT
+  customer_key INT
+  sales_person_key INT
+  picked_by_person_key INT
+  contact_person_key INT
+  backorder_order_key INT
+  order_date date
+  quantity INT
+  unit_price NUMERIC
+  tax_rate NUMERIC
+  net_sales NUMERIC
+  net_tax NUMERIC
+  net_sales_real NUMERIC
+}
+
+Table dim_customer {
+  customer_key INT [pk]
+  customer_name STRING
+  customer_category_key INT 
+  customer_category_name STRING
+  buying_group_key INT
+  buying_group_name STRING
+  delivery_method_key INT
+  delivery_method_name STRING
+  delivery_city_key INT
+  delivery_city_name STRING
+  postal_city_key INT
+  postal_city_name STRING
+  primary_contact_person_key INT
+  primary_full_name STRING
+  alternate_contact_person_key INT
+  alternate_full_name STRING
+  bill_to_customer_key INT
+  bill_to_customer_name STRING
+}
+
+Table dim_date {
+  date date [pk]
+  day_of_week date
+  day_of_week_short date
+  is_weekday_or_weekend date
+  year_month date
+  month date
+  year date
+  year_number date
+}
+
+Table dim_package_type {
+  package_type_key INT [pk]
+  package_type_name STRING
+}
+
+Table dim_person {
+  person_key INT [pk]
+  full_name STRING
+  is_permitted_to_logon STRING
+  is_external_logon_provider STRING
+  is_system_user STRING 
+  is_employee STRING
+  is_salesperson STRING
+}
+
+Table dim_product {
+  product_key INT [pk]
+  product_name STRING
+  brand_name STRING 
+  quantity_per_outer INT
+  tax_rate NUMERIC
+  unit_price NUMERIC
+  recommended_retail_price NUMERIC 
+  supplier_key INT
+  supplier_name STRING
+  supplier_payment_days INT
+  supplier_category_key INT
+  supplier_category_name STRING
+  colour_key INT
+  colour_name STRING
+  unit_package_type_key INT
+  unit_package_type_name STRING
+  outer_package_type_key INT
+  outer_package_type_name STRING
+}
+
+ref: fact_sales_order_line.order_date > dim_date.date
+ref: fact_sales_order_line.backorder_order_key > dim_person.person_key
+ref: fact_sales_order_line.contact_person_key > dim_person.person_key
+ref: fact_sales_order_line.picked_by_person_key > dim_person.person_key
+ref: fact_sales_order_line.sales_person_key > dim_person.person_key
+ref: fact_sales_order_line.product_key > dim_product.product_key
+ref: fact_sales_order_line.package_type_key > dim_package_type.package_type_key
+ref: fact_sales_order_line.customer_key > dim_customer.customer_key
