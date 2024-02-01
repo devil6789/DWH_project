@@ -46,7 +46,6 @@ WITH fact_sales_order_line__source AS (
         , fact_sales_order.order_date        
         , fact_sales_order.order_expected_delivery_date
         , fact_sales_order.order_picking_completed_when
-
         , fact_sales_order_line.line_picking_completed_when
         , fact_sales_order.is_undersupply_backordered
         , fact_sales_order.customer_purchase_order_number
@@ -66,6 +65,7 @@ WITH fact_sales_order_line__source AS (
     FROM `fact_sales_order_line__join`
 )
 
+, fact_sales_order_line__handle_null AS (
     SELECT
         COALESCE(sales_order_line_key, 0) AS sales_order_line_key
         , COALESCE(description, 'Undefined') AS description
@@ -122,3 +122,27 @@ WITH fact_sales_order_line__source AS (
         , COALESCE(net_tax, 0) AS net_tax
         , COALESCE(net_sales_real, 0) AS net_sales_real
     FROM `fact_sales_order_line__calculated_measure`
+)
+
+    SELECT
+        sales_order_line_key
+        , description
+        , sales_order_key
+        , product_key
+        , package_type_key
+        , customer_key
+        , sales_person_key
+        , picked_by_person_key
+        , contact_person_key
+        , backorder_order_key
+        , order_date
+        , order_expected_delivery_date
+        , order_picking_completed_when
+        , line_picking_completed_when
+        , is_undersupply_backordered
+        , customer_purchase_order_number
+        , quantity
+        , unit_price
+        , tax_rate
+    FROM `fact_sales_order_line__handle_null`
+    
