@@ -88,6 +88,7 @@ WITH dim_product__source AS (
     SELECT -1, 'Invalid', 'Invalid', 'Invalid', -1, -1, -1, -1, -1, -1, 'Invalid', -1, -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid'
 )
 
+, dim_product__handle_null AS (
     SELECT 
         COALESCE(product_key, 0) AS product_key
         , COALESCE(product_name, 'Undefined') AS product_name
@@ -112,5 +113,33 @@ WITH dim_product__source AS (
         , COALESCE(outer_package_type_key, 0) AS outer_package_type_key
         , COALESCE(outer_package_type_name, 'Undefined') AS outer_package_type_name
     FROM `dim_product__add_undefined_invalid`
+)
+
+    SELECT
+        product_key
+        , product_name
+        , brand_name
+        , product_size
+        , quantity_per_outer
+        , tax_rate
+        , unit_price
+        , recommended_retail_price
+        , lead_time_days
+        , supplier_key
+        , supplier_name
+        , supplier_payment_days
+        , supplier_category_key
+        , supplier_category_name
+        , delivery_method_key
+        , delivery_method_name
+        , colour_key
+        , colour_name
+        , unit_package_type_key
+        , unit_package_type_name
+        , outer_package_type_key
+        , outer_package_type_name
+    FROM `dim_product__handle_null`
+
+    
     
         
