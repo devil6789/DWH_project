@@ -39,6 +39,7 @@ WITH dim_product__source AS (
     FROM `dim_product__rename`    
 )
 
+, dim_product__join AS (
     SELECT
         dim_product.product_key
         , dim_product.product_name
@@ -74,4 +75,15 @@ WITH dim_product__source AS (
         
       LEFT JOIN {{ ref("dim_package_type") }} AS dim_outer_package_type
         ON dim_product.outer_package_key = dim_outer_package_type.package_type_key
+)
+
+    SELECT *
+    FROM `dim_product__join`
+
+    UNION ALL 
+    SELECT 0, 'Undefined', 'Undefined', 'Undefined', 0, 0, 0, 0, 0, 0, 'Undefined', 0, 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined'
+
+    UNION ALL 
+    SELECT -1, 'Invalid', 'Invalid', 'Invalid', -1, -1, -1, -1, -1, -1, 'Invalid', -1, -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid'
+    
         
