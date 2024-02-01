@@ -5,7 +5,7 @@ WITH fact_sales_order_line__source AS (
 
 , fact_sales_order_line__rename AS (
     SELECT
-        order_line_id AS order_line_key
+        order_line_id AS sales_order_line_key
         , description
         , order_id AS sales_order_key
         , stock_item_id AS product_key
@@ -19,7 +19,7 @@ WITH fact_sales_order_line__source AS (
 
 , fact_sales_order_line__cast_type AS (
     SELECT
-        CAST(order_line_key AS INT) AS order_line_key 
+        CAST(sales_order_line_key AS INT) AS sales_order_line_key 
         , CAST(description AS STRING) AS description 
         , CAST(sales_order_key AS INT) AS sales_order_key 
         , CAST(product_key AS INT) AS product_key 
@@ -33,7 +33,7 @@ WITH fact_sales_order_line__source AS (
 
 , fact_sales_order_line__join AS (
     SELECT
-        fact_sales_order_line.order_line_key
+        fact_sales_order_line.sales_order_line_key
         , fact_sales_order_line.description
         , fact_sales_order_line.sales_order_key
         , fact_sales_order_line.product_key
@@ -67,26 +67,58 @@ WITH fact_sales_order_line__source AS (
 )
 
     SELECT
-        order_line_key
-        , description
-        , sales_order_key
-        , product_key
-        , package_type_key
-        , customer_key
-        , sales_person_key
-        , picked_by_person_key
-        , contact_person_key
-        , backorder_order_key
-        , order_date
-        , order_expected_delivery_date
-        , order_picking_completed_when
-        , line_picking_completed_when
-        , is_undersupply_backordered
-        , customer_purchase_order_number
-        , quantity
-        , unit_price
-        , tax_rate
-        , net_sales
-        , net_tax
-        , net_sales_real
+        COALESCE(sales_order_line_key, 0) AS sales_order_line_key
+        , COALESCE(description, 'Undefined') AS description
+        , CASE
+            WHEN sales_order_key > 0 THEN  sales_order_key
+            WHEN sales_order_key IS NULL THEN 0
+            WHEN sales_order_key <= 0 THEN -1            
+          END AS sales_order_key
+        , CASE
+            WHEN product_key > 0 THEN  product_key
+            WHEN product_key IS NULL THEN 0
+            WHEN product_key <= 0 THEN -1
+          END AS product_key
+        , CASE
+            WHEN package_type_key > 0 THEN  package_type_key
+            WHEN package_type_key IS NULL THEN 0
+            WHEN package_type_key <= 0 THEN -1
+          END AS package_type_key
+        , CASE
+            WHEN customer_key > 0 THEN  customer_key
+            WHEN customer_key IS NULL THEN 0
+            WHEN customer_key <= 0 THEN -1
+          END AS customer_key
+        , CASE
+            WHEN sales_person_key > 0 THEN  sales_person_key
+            WHEN sales_person_key IS NULL THEN 0
+            WHEN sales_person_key <= 0 THEN -1
+          END AS sales_person_key
+        , CASE
+            WHEN picked_by_person_key > 0 THEN  picked_by_person_key
+            WHEN picked_by_person_key IS NULL THEN 0
+            WHEN picked_by_person_key <= 0 THEN -1
+          END AS picked_by_person_key
+        , CASE
+            WHEN contact_person_key > 0 THEN  contact_person_key
+            WHEN contact_person_key IS NULL THEN 0
+            WHEN contact_person_key <= 0 THEN -1
+          END AS contact_person_key 
+        , CASE
+            WHEN backorder_order_key > 0 THEN  backorder_order_key
+            WHEN backorder_order_key IS NULL THEN 0
+            WHEN backorder_order_key <= 0 THEN -1
+          END AS backorder_order_key 
+        , COALESCE(order_date, '2012-01-01') AS order_date
+        , COALESCE(order_expected_delivery_date, '2012-01-01') AS order_expected_delivery_date
+        , COALESCE(order_picking_completed_when, '2012-01-01') AS order_picking_completed_when
+        , COALESCE(line_picking_completed_when, '2012-01-01') AS line_picking_completed_when
+        , COALESCE(is_undersupply_backordered, 'Undefined') AS is_undersupply_backordered
+        , COALESCE(customer_purchase_order_number, 'Undefined') AS customer_purchase_order_number
+        , COALESCE(quantity, 0) AS quantity
+        , COALESCE(unit_price, 0) AS unit_price
+        , COALESCE(tax_rate, 0) AS tax_rate
+        , COALESCE(net_sales, 0) AS net_sales
+        , COALESCE(net_tax, 0) AS net_tax
+        , COALESCE(net_sales_real, 0) AS net_sales_real
     FROM `fact_sales_order_line__calculated_measure`
