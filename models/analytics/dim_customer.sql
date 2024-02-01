@@ -20,6 +20,7 @@ WITH dim_customer__source AS (
         , postal_city_id AS postal_city_key
         , primary_contact_person_id AS primary_contact_person_key
         , alternate_contact_person_id AS alternate_contact_person_key
+        , bill_to_customer_id AS bill_to_customer_key
     FROM `dim_customer__source`
 )
 
@@ -39,7 +40,8 @@ WITH dim_customer__source AS (
         , CAST(delivery_city_key AS INT) AS delivery_city_key  
         , CAST(postal_city_key AS INT) AS postal_city_key
         , CAST(primary_contact_person_key AS INT) AS primary_contact_person_key 
-        , CAST(alternate_contact_person_key AS INT) AS alternate_contact_person_key 
+        , CAST(alternate_contact_person_key AS INT) AS alternate_contact_person_key
+        , CAST(bill_to_customer_key AS INT) AS bill_to_customer_key
     FROM `dim_customer__rename`
 )
 
@@ -70,6 +72,7 @@ WITH dim_customer__source AS (
         , postal_city_key
         , primary_contact_person_key
         , alternate_contact_person_key
+        , bill_to_customer_key
     FROM `dim_customer__cast_type`
 )
 
@@ -106,6 +109,8 @@ WITH dim_customer__source AS (
         , dim_primary_contact_person.full_name AS primary_full_name
         , dim_customer.alternate_contact_person_key
         , dim_alternate_contact_person.full_name AS alternate_full_name
+        , dim_customer.bill_to_customer_key
+        , dim_bill_to_customer.customer_name AS bill_to_customer_name
                 
         
     FROM `dim_customer__handle_boolean` AS dim_customer
@@ -128,4 +133,7 @@ WITH dim_customer__source AS (
         ON dim_customer.primary_contact_person_key = dim_primary_contact_person.person_key
 
       LEFT JOIN {{ ref("dim_person") }} AS dim_alternate_contact_person
-        ON dim_customer.alternate_contact_person_key = dim_alternate_contact_person.person_key      
+        ON dim_customer.alternate_contact_person_key = dim_alternate_contact_person.person_key
+
+      LEFT JOIN {{ ref("dim_customer") }} AS dim_bill_to_customer
+        ON  dim_customer.bill_to_customer_key = dim_bill_to_customer.customer_key
