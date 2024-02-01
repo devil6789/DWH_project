@@ -135,5 +135,5 @@ WITH dim_customer__source AS (
       LEFT JOIN {{ ref("dim_person") }} AS dim_alternate_contact_person
         ON dim_customer.alternate_contact_person_key = dim_alternate_contact_person.person_key
 
-      LEFT JOIN {{ ref("dim_customer") }} AS dim_bill_to_customer
+      LEFT JOIN dim_customer__handle_boolean AS dim_bill_to_customer
         ON  dim_customer.bill_to_customer_key = dim_bill_to_customer.customer_key
