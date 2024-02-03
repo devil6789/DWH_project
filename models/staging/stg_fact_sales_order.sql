@@ -30,13 +30,14 @@ WITH fact_sales_order__source AS (
         , CAST(order_date AS DATE) AS order_date
         , CAST(order_expected_delivery_date AS DATE) AS order_expected_delivery_date 
         , CAST(order_picking_completed_when AS DATE) AS order_picking_completed_when 
-        , CAST(is_undersupply_backordered_boolean AS BOOLEAN) AS is_undersupply_backordered_boolean 
+        , CAST(is_undersupply_backordered_boolean AS BOOLEAN) AS is_undersupply_backordered_boolean
         , CAST(customer_purchase_order_number AS STRING) AS customer_purchase_order_number      
     FROM `fact_sales_order__rename`
 )
 
 , fact_sales_order__handle_boolean AS (
-    SELECT * EXCEPT(is_undersupply_backordered_boolean)
+    -- SELECT * EXCEPT(is_undersupply_backordered_boolean)
+       SELECT *
         , CASE
             WHEN is_undersupply_backordered_boolean IS TRUE THEN 'Undersupply Backordered' 
             WHEN is_undersupply_backordered_boolean IS FALSE THEN 'Not Undersupply Backordered'  
@@ -55,6 +56,7 @@ WITH fact_sales_order__source AS (
         , order_date
         , order_expected_delivery_date
         , order_picking_completed_when
+        , is_undersupply_backordered_boolean
         , is_undersupply_backordered
         , customer_purchase_order_number
     FROM `fact_sales_order__handle_boolean`
