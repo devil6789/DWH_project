@@ -126,6 +126,8 @@ WITH fact_sales_order_line__source AS (
     FROM `fact_sales_order_line__calculated_measure`
 )
 
+, fact_sales_order_line__add_new_key AS (
+
     SELECT
         sales_order_line_key
         , description
@@ -150,7 +152,10 @@ WITH fact_sales_order_line__source AS (
         , net_sales
         , net_tax
         , net_sales_real
-
-
+        , concat(package_type_key, is_undersupply_backordered_boolean) AS new_key
     FROM `fact_sales_order_line__handle_null`
-    
+)
+    -- LEFT JOIN {{ ref("dim_sales_order_line_indicator") }} AS sales_order_line_indicator 
+    -- ON fact_sales_order_line__handle_null.new_key = sales_order_line_indicator.new_key
+    SELECT *
+    FROM `fact_sales_order_line__add_new_key`
