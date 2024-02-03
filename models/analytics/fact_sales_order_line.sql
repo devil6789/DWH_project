@@ -47,6 +47,7 @@ WITH fact_sales_order_line__source AS (
         , fact_sales_order.order_expected_delivery_date
         , fact_sales_order.order_picking_completed_when
         , fact_sales_order_line.line_picking_completed_when
+        , fact_sales_order.is_undersupply_backordered_boolean
         , fact_sales_order.is_undersupply_backordered
         , fact_sales_order.customer_purchase_order_number
         , fact_sales_order_line.quantity
@@ -113,6 +114,7 @@ WITH fact_sales_order_line__source AS (
         , COALESCE(order_expected_delivery_date, '2012-01-01') AS order_expected_delivery_date
         , COALESCE(order_picking_completed_when, '2012-01-01') AS order_picking_completed_when
         , COALESCE(line_picking_completed_when, '2012-01-01') AS line_picking_completed_when
+        , is_undersupply_backordered_boolean
         , COALESCE(is_undersupply_backordered, 'Undefined') AS is_undersupply_backordered
         , COALESCE(customer_purchase_order_number, 'Undefined') AS customer_purchase_order_number
         , COALESCE(quantity, 0) AS quantity
@@ -139,10 +141,16 @@ WITH fact_sales_order_line__source AS (
         , order_expected_delivery_date
         , order_picking_completed_when
         , line_picking_completed_when
+        , is_undersupply_backordered_boolean
         , is_undersupply_backordered
         , customer_purchase_order_number
         , quantity
         , unit_price
         , tax_rate
+        , net_sales
+        , net_tax
+        , net_sales_real
+
+
     FROM `fact_sales_order_line__handle_null`
     
