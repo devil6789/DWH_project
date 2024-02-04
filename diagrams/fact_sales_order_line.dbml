@@ -87,10 +87,11 @@ Table dim_product {
 }
 
 ref: fact_sales_order_line.order_date > dim_date.date
-ref: fact_sales_order_line.backorder_order_key > dim_person.person_key
 ref: fact_sales_order_line.contact_person_key > dim_person.person_key
 ref: fact_sales_order_line.picked_by_person_key > dim_person.person_key
 ref: fact_sales_order_line.sales_person_key > dim_person.person_key
 ref: fact_sales_order_line.product_key > dim_product.product_key
 ref: fact_sales_order_line.package_type_key > dim_package_type.package_type_key
 ref: fact_sales_order_line.customer_key > dim_customer.customer_key
+
+
