@@ -129,17 +129,18 @@ WITH fact_sales_order_line__source AS (
         , description
         , sales_order_key
         , product_key
-        , package_type_key
+        
         , customer_key
         , sales_person_key
         , picked_by_person_key
         , contact_person_key
         , backorder_order_key
+        , concat(package_type_key, ',', is_undersupply_backordered) AS sales_order_line_indicator_key
         , order_date
         , order_expected_delivery_date
         , order_picking_completed_when
         , line_picking_completed_when
-        , is_undersupply_backordered
+        
         , customer_purchase_order_number
         , quantity
         , unit_price
@@ -147,6 +148,6 @@ WITH fact_sales_order_line__source AS (
         , net_sales
         , net_tax
         , net_sales_real
-        , concat(package_type_key, ',', is_undersupply_backordered) AS sales_order_line_indicator_key
+        
     FROM `fact_sales_order_line__handle_null`
     
