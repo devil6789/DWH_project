@@ -147,5 +147,6 @@ WITH fact_sales_order_line__source AS (
         , net_sales
         , net_tax
         , net_sales_real
+        , concat(package_type_key, ',', is_undersupply_backordered) AS sales_order_line_indicator_key
     FROM `fact_sales_order_line__handle_null`
     
