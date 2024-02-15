@@ -4,7 +4,8 @@ models:
   - name: fact_sales_order_line
     columns: 
       - name: sales_order_line_key
-        tests: 
+        tests:
+          - unique
           - not_null
 
       - name: description 

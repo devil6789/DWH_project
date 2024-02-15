@@ -4,6 +4,7 @@ models:
     columns: 
       - name: sales_order_line_indicator_key
         tests: 
+          - unique
           - not_null
       
       - name: package_type_key 

@@ -5,6 +5,7 @@ models:
     columns: 
       - name: package_type_key
         tests:
+          - unique
           - not_null
 
       - name: package_type_name

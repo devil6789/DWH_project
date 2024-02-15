@@ -4,7 +4,8 @@ models:
   - name: dim_date
     columns: 
       - name: date
-        tests: 
+        tests:
+          - unique
           - not_null
 
       - name: day_of_week 
