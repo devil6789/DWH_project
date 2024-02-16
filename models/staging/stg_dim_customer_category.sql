@@ -19,3 +19,8 @@ WITH dim_customer_category__source AS (
 
     SELECT *
     FROM `dim_customer_category__cast_type`
+    UNION ALL
+    SELECT 0, 'Undefined'
+
+    UNION ALL
+    SELECT -1, 'Invalid'
