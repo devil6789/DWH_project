@@ -39,6 +39,9 @@ models:
       - name: customer_category_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_customer_category')
+              field: customer_category_key
 
       - name: customer_category_name
         tests:
@@ -47,6 +50,9 @@ models:
       - name: buying_group_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_customer_buying_group')
+              field: buying_group_key
 
       - name: buying_group_name
         tests:
@@ -55,6 +61,9 @@ models:
       - name: delivery_method_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_delivery_method')
+              field: delivery_method_key
 
       - name: delivery_method_name
         tests:
@@ -63,6 +72,11 @@ models:
       - name: delivery_city_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_city')
+              field: city_key
+              config:
+                where: "delivery_city_key NOT IN (0,-1)"
 
       - name: delivery_city_name
         tests:
@@ -82,7 +96,7 @@ models:
 
       - name: delivery_country_key
         tests:
-          - not_null
+          - not_null]
 
       - name: delivery_country_name
         tests:
@@ -91,6 +105,11 @@ models:
       - name: postal_city_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_city')
+              field: city_key
+              config:
+                where: "postal_city_key NOT IN (0,-1)"
 
       - name: postal_city_name
         tests:
@@ -119,6 +138,9 @@ models:
       - name: primary_contact_person_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_person')
+              field: person_key
 
       - name: primary_full_name
         tests:
@@ -127,6 +149,9 @@ models:
       - name: alternate_contact_person_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_person')
+              field: person_key
 
       - name: alternate_full_name
         tests:
@@ -135,6 +160,9 @@ models:
       - name: bill_to_customer_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
 
       - name: bill_to_customer_name
         tests:
