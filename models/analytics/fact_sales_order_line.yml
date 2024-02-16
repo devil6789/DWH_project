@@ -2,6 +2,12 @@ version: 2
 
 models: 
   - name: fact_sales_order_line
+    tests: 
+      - dbt_utils.equal_rowcount:
+          compare_model: 'vit-lam-data.wide_world_importers.sales__order_lines'
+    # tests:
+    #   - dbt_utils.expression_is_true:
+    #       expression: "quantity * unit_price = net_sales"
     columns: 
       - name: sales_order_line_key
         tests:
@@ -71,6 +77,9 @@ models:
           - relationships:
               to: ref('dim_order_date')
               field: order_date
+          - dbt_utils.accepted_range:
+              min_value: "'2013-01-01'"
+              max_value: 'current_date()'
 
       - name: order_expected_delivery_date
         tests: 
@@ -97,13 +106,25 @@ models:
         tests: 
           - not_null
 
+      - name: is_undersupply_backordered
+        tests: 
+          - not_null
+          - accepted_values: 
+              values: ['Undersupply Backordered', 'Not Undersupply Backordered']  
+
       - name: quantity
         tests: 
           - not_null
+          - custom_test_equal_sum:
+              compare_model: "`vit-lam-data.wide_world_importers.sales__order_lines`"
+              compare_column: "quantity"
 
       - name: unit_price
         tests: 
           - not_null
+          - custom_test_equal_sum:
+              compare_model: "`vit-lam-data.wide_world_importers.sales__order_lines`"
+              compare_column: "unit_price"
 
       - name: tax_rate
         tests: 
@@ -112,6 +133,8 @@ models:
       - name: net_sales
         tests: 
           - not_null
+          - dbt_utils.expression_is_true:
+              expression: '= quantity * unit_price'
 
       - name: net_tax
         tests: 
