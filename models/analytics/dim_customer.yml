@@ -23,6 +23,10 @@ models:
       - name: is_on_credit_hold
         tests:
           - not_null
+          - accepted_values: 
+              values: ['Not On Credit Hold', 'On Credit Hold']
+              config:
+                where: "is_on_credit_hold NOT IN ('Undefined', 'Invalid')"
 
       - name: standard_discount_percentage
         tests:
