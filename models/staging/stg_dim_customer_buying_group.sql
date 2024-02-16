@@ -23,3 +23,8 @@ WITH stg_dim_customer_buying_group__source AS (
         buying_group_key
         , buying_group_name
     FROM `stg_dim_customer_buying_group__cast_type`
+    UNION ALL
+    SELECT 0, 'Undefined'
+
+    UNION ALL
+    SELECT -1, 'Invalid'
