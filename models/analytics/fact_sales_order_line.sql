@@ -128,26 +128,24 @@ WITH fact_sales_order_line__source AS (
         sales_order_line_key
         , description
         , sales_order_key
-        , product_key
-        
+        , product_key       
         , customer_key
         , sales_person_key
         , picked_by_person_key
         , contact_person_key
         , backorder_order_key
-        , FARM_FINGERPRINT(concat(package_type_key, ',', is_undersupply_backordered)) AS sales_order_line_indicator_key
+        , is_undersupply_backordered
+        , FARM_FINGERPRINT(CONCAT(package_type_key, ',', is_undersupply_backordered)) AS sales_order_line_indicator_key
         , order_date
         , order_expected_delivery_date
         , order_picking_completed_when
-        , line_picking_completed_when
-        
+        , line_picking_completed_when       
         , customer_purchase_order_number
         , quantity
         , unit_price
         , tax_rate
         , net_sales
         , net_tax
-        , net_sales_real
-        
+        , net_sales_real       
     FROM `fact_sales_order_line__handle_null`
     
