@@ -15,6 +15,10 @@ models:
       - name: is_statement_sent
         tests:
           - not_null
+          - accepted_values: 
+              values: ['Not Statement Sent', 'Statement Sent']
+              config:
+                where: "is_statement_sent NOT IN ('Undefined', 'Invalid')"
 
       - name: is_on_credit_hold
         tests:
