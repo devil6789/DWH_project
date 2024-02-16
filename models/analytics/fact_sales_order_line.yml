@@ -15,26 +15,44 @@ models:
       - name: sales_order_key 
         tests: 
           - not_null
+          - relationships:
+              to: ref('stg_fact_sales_order')
+              field: sales_order_key
 
       - name: product_key 
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
 
       - name: customer_key 
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
 
       - name: sales_person_key 
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_salesperson_person')
+              field: salesperson_person_key
 
       - name: picked_by_person_key 
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_picked_by_person')
+              field: picked_by_person_key
 
       - name: contact_person_key 
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_contact_person')
+              field: contact_person_key
 
       - name: backorder_order_key 
         tests: 
@@ -43,22 +61,37 @@ models:
       - name: sales_order_line_indicator_key
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_sales_order_line_indicator')
+              field: sales_order_line_indicator_key
 
       - name: order_date
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_order_date')
+              field: order_date
 
       - name: order_expected_delivery_date
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_order_expected_delivery_date')
+              field: order_expected_delivery_date
 
       - name: order_picking_completed_when
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_order_picking_completed_when')
+              field: order_picking_completed_when
 
       - name: line_picking_completed_when
         tests: 
           - not_null
+          - relationships:
+              to: ref('dim_line_picking_completed_when')
+              field: line_picking_completed_when
 
       - name: customer_purchase_order_number
         tests: 
