@@ -43,6 +43,11 @@ models:
       - name: supplier_key   
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_supplier')
+              field: supplier_key
+              config:
+                where: "supplier_key NOT IN (0,-1)"
 
       - name: supplier_name   
         tests:
@@ -71,6 +76,12 @@ models:
       - name: colour_key   
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_colour')
+              field: colour_key
+              config:
+                where: "colour_key NOT IN (0,-1)"
+
 
       - name: colour_name   
         tests:
@@ -79,6 +90,11 @@ models:
       - name: unit_package_type_key   
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_package_type')
+              field: package_type_key
+              config:
+                where: "unit_package_type_key NOT IN (0,-1)"
 
       - name: unit_package_type_name   
         tests:
@@ -87,6 +103,11 @@ models:
       - name: outer_package_type_key   
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_package_type')
+              field: package_type_key
+              config:
+                where: "outer_package_type_key NOT IN (0,-1)"
 
       - name: outer_package_type_name   
         tests:
