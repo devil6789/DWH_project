@@ -29,8 +29,8 @@ WITH dim_supplier__source AS (
         , dim_supplier.supplier_payment_days
         , dim_supplier.supplier_category_key
         , dim_supplier_category.supplier_category_name
-        , dim_supplier.delivery_method_key
-        , dim_delivery_method.delivery_method_name
+        , COALESCE(dim_supplier.delivery_method_key, 0) AS delivery_method_key
+        , COALESCE(dim_delivery_method.delivery_method_name, 'Undefined') AS delivery_method_name
     FROM `dim_supplier__cast_type` AS dim_supplier
       LEFT JOIN {{ ref("stg_dim_supplier_category") }} AS dim_supplier_category
         ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
