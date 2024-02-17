@@ -3,12 +3,11 @@ Table fact_sales_order_line {
   description STRING
   sales_order_key INT
   product_key INT
-  package_type_key INT
   customer_key INT
   sales_person_key INT
   picked_by_person_key INT
   contact_person_key INT
-  backorder_order_key INT
+  sales_order_line_indicator_key INT
   order_date date
   quantity INT
   unit_price NUMERIC
@@ -50,9 +49,12 @@ Table dim_date {
   year_number date
 }
 
-Table dim_package_type {
-  package_type_key INT [pk]
+Table dim_sales_order_line_indicator {
+  sales_order_line_indicator_key INT [pk]
+  package_type_key INT 
   package_type_name STRING
+  is_undersupply_backordered_boolean BOOLEAN
+  is_undersupply_backordered STRING
 }
 
 Table dim_person {
@@ -91,7 +93,7 @@ ref: fact_sales_order_line.contact_person_key > dim_person.person_key
 ref: fact_sales_order_line.picked_by_person_key > dim_person.person_key
 ref: fact_sales_order_line.sales_person_key > dim_person.person_key
 ref: fact_sales_order_line.product_key > dim_product.product_key
-ref: fact_sales_order_line.package_type_key > dim_package_type.package_type_key
 ref: fact_sales_order_line.customer_key > dim_customer.customer_key
+ref: fact_sales_order_line.sales_order_line_indicator_key > dim_sales_order_line_indicator.sales_order_line_indicator_key
 
 
