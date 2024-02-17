@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: dim_person
+    columns:
+      - name: person_key
+        tests:
+          - unique
+          - not_null
+
+      - name: full_name
+        tests:
+          - not_null
+
+      - name: preferred_name
+        tests:
+          - not_null
+
+      - name: search_name
+        tests:
+          - not_null
+
+      - name: is_permitted_to_logon
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['Permitted To Logon', 'Not Permitted To Logon']
+              config:
+                where: "is_permitted_to_logon NOT IN ('Undefined', 'Invalid')"
+
+      - name: is_external_logon_provider
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['External Logon Provider', 'Not External Logon Provider']
+              config:
+                where: "is_external_logon_provider NOT IN ('Undefined', 'Invalid')"
+
+      - name: is_system_user
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['System User', 'Not System User']
+              config:
+                where: "is_system_user NOT IN ('Undefined', 'Invalid')"
+
+      - name: is_employee
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['Employee', 'Not Employee']
+              config:
+                where: "is_employee NOT IN ('Undefined', 'Invalid')"
+
+      - name: is_salesperson
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['Sales Person', 'Not Sales Person']
+              config:
+                where: "is_salesperson NOT IN ('Undefined', 'Invalid')"

@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: dim_product
+    columns:
+      - name: product_key
+        tests:
+          - unique
+          - not_null
+
+      - name: product_name   
+        tests:
+          - not_null
+
+      - name: brand_name   
+        tests:
+          - not_null
+
+      - name: product_size   
+        tests:
+          - not_null
+
+      - name: quantity_per_outer   
+        tests:
+          - not_null
+
+      - name: tax_rate   
+        tests:
+          - not_null
+
+      - name: unit_price   
+        tests:
+          - not_null
+
+      - name: recommended_retail_price   
+        tests:
+          - not_null
+
+      - name: lead_time_days   
+        tests:
+          - not_null
+
+      - name: supplier_key   
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_dim_supplier')
+              field: supplier_key
+              config:
+                where: "supplier_key NOT IN (0,-1)"
+
+      - name: supplier_name   
+        tests:
+          - not_null
+
+      - name: supplier_payment_days   
+        tests:
+          - not_null
+
+      - name: supplier_category_key   
+        tests:
+          - not_null
+
+      - name: supplier_category_name   
+        tests:
+          - not_null
+
+      - name: delivery_method_key   
+        tests:
+          - not_null
+
+      - name: delivery_method_name   
+        tests:
+          - not_null
+
+      - name: colour_key   
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_dim_colour')
+              field: colour_key
+              config:
+                where: "colour_key NOT IN (0,-1)"
+
+
+      - name: colour_name   
+        tests:
+          - not_null
+
+      - name: unit_package_type_key   
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_package_type')
+              field: package_type_key
+              config:
+                where: "unit_package_type_key NOT IN (0,-1)"
+
+      - name: unit_package_type_name   
+        tests:
+          - not_null
+
+      - name: outer_package_type_key   
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_package_type')
+              field: package_type_key
+              config:
+                where: "outer_package_type_key NOT IN (0,-1)"
+
+      - name: outer_package_type_name   
+        tests:
+          - not_null
+
+      
