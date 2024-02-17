@@ -49,3 +49,16 @@ models:
           - relationships:
               to: ref('dim_package_type')
               field: package_type_key
+      
+      - name: ordered_outers_expected_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: '= ordered_outers * expected_unit_price_per_outer'
+      
+      - name: received_outers_expected_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: '= received_outers * expected_unit_price_per_outer'
+            
