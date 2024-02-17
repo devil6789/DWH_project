@@ -104,11 +104,11 @@ WITH fact_purchase_order_line__source AS (
         , is_order_finalized
         , is_order_line_finalized_boolean
         , is_order_line_finalized
+        , order_comments
+        , order_internal_comments
         , ordered_outers
         , received_outers
         , expected_unit_price_per_outer
-        , order_comments
-        , order_internal_comments
     FROM `fact_purchase_order_line__join`
     
 
