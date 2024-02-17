@@ -35,10 +35,29 @@ WITH fact_purchase_order__source AS (
         , CASE
             WHEN is_order_finalized_boolean IS TRUE THEN 'Order Finalized'
             WHEN is_order_finalized_boolean IS FALSE THEN 'Not Order Finalized'
-            ELSE 'Undefined'
+            WHEN is_order_finalized_boolean IS NULL THEN 'Undefined'
+            ELSE 'Invalid'
           END AS is_order_finalized
     FROM `fact_purchase_order__cast_type`
 )
 
-    SELECT *
+, fact_purchase_order__handle_null AS (
+    SELECT
+        purchase_order_key
+        , supplier_key
+        , delivery_method_key
+        , contact_person_key
+        , COALESCE(expected_delivery_date, '2012-01-01') AS expected_delivery_date
+        , is_order_finalized_boolean
+        , COALESCE(order_comments, 'Undefined') AS order_comments
+        , COALESCE(order_internal_comments, 'Undefined') AS order_internal_comments
+        , COALESCE(is_order_finalized, 'Undefined') AS is_order_finalized
     FROM `fact_purchase_order__handle_boolean`
+)
+
+
+
+
+
+    SELECT *
+    FROM `fact_purchase_order__handle_null`
