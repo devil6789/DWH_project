@@ -100,8 +100,6 @@ WITH fact_purchase_order_line__source AS (
         purchase_order_line_key
         , description
         , purchase_order_key
-        , supplier_key
-        , delivery_method_key
         , contact_person_key
         , product_key
         , package_type_key
