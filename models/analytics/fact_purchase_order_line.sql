@@ -47,11 +47,11 @@ WITH fact_purchase_order_line__source AS (
 
 , fact_purchase_order_line__handle_null AS (
     SELECT
-        purchase_order_line_key
+        COALESCE(purchase_order_line_key, 0) AS purchase_order_line_key 
         , COALESCE(description, 'Undefined') AS description
-        , purchase_order_key
-        , product_key
-        , package_type_key
+        , COALESCE(purchase_order_key, 0) AS purchase_order_key 
+        , COALESCE(product_key, 0) AS product_key 
+        , COALESCE(package_type_key, 0) AS package_type_key 
         , COALESCE(last_receipt_date, '2012-01-01') AS last_receipt_date
         , is_order_line_finalized_boolean
         , COALESCE(is_order_line_finalized, 'Undefined') AS is_order_line_finalized
