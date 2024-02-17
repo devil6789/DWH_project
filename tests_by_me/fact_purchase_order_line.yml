@@ -2,6 +2,9 @@ version: 2
 
 models:
   - name: fact_purchase_order_line
+    tests: 
+      - dbt_utils.equal_rowcount:
+          compare_model: "`vit-lam-data.wide_world_importers.purchasing__purchase_order_lines`"
     columns:
       - name: purchase_order_line_key
         tests: 
@@ -49,6 +52,20 @@ models:
           - relationships:
               to: ref('dim_package_type')
               field: package_type_key
+      
+      - name: ordered_outers
+        tests:
+          - not_null
+          - custom_test_equal_sum:
+              compare_model: "`vit-lam-data.wide_world_importers.purchasing__purchase_order_lines`"
+              compare_column: "ordered_outers"
+
+      - name: received_outers
+        tests:
+          - not_null
+          - custom_test_equal_sum:
+              compare_model: "`vit-lam-data.wide_world_importers.purchasing__purchase_order_lines`"
+              compare_column: "received_outers"
       
       - name: ordered_outers_expected_price
         tests:
