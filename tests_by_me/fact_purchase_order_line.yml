@@ -61,4 +61,18 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: '= received_outers * expected_unit_price_per_outer'
+      
+      - name: is_order_finalized
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Order Finalized', 'Not Order Finalized', 'Undefined']
+      
+      - name: is_order_line_finalized
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Order Line Finalized', 'Not Order Line Finalized', 'Undefined']
+
+      
             
