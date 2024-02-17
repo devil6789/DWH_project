@@ -88,6 +88,14 @@ WITH fact_purchase_order_line__source AS (
         ON purchase_order.purchase_order_key = purchase_order_line.purchase_order_key
 )
 
+, fact_purchase_order_line__calculated_measure AS (
+    SELECT
+        *
+        , ordered_outers * expected_unit_price_per_outer AS ordered_outers_expected_price
+        , received_outers * expected_unit_price_per_outer AS received_outers_expected_price
+    FROM `fact_purchase_order_line__join`
+)
+
     SELECT
         purchase_order_line_key
         , description
@@ -109,6 +117,8 @@ WITH fact_purchase_order_line__source AS (
         , ordered_outers
         , received_outers
         , expected_unit_price_per_outer
-    FROM `fact_purchase_order_line__join`
+        , ordered_outers_expected_price
+        , received_outers_expected_price
+    FROM `fact_purchase_order_line__calculated_measure`
     
 
