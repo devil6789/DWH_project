@@ -29,5 +29,16 @@ WITH fact_purchase_order__source AS (
     FROM `fact_purchase_order__rename`
 )
 
-    SELECT *
+, fact_purchase_order__handle_boolean AS (
+    SELECT
+        *
+        , CASE
+            WHEN is_order_finalized_boolean IS TRUE THEN 'Order Finalized'
+            WHEN is_order_finalized_boolean IS FALSE THEN 'Not Order Finalized'
+            ELSE 'Undefined'
+          END AS is_order_finalized
     FROM `fact_purchase_order__cast_type`
+)
+
+    SELECT *
+    FROM `fact_purchase_order__handle_boolean`
