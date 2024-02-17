@@ -12,26 +12,6 @@ Table fact_purchase_order_line {
   received_outers_expected_price NUMERIC
 }
 
-Table dim_customer {
-  customer_key INT [pk]
-  customer_name STRING
-  customer_category_key INT 
-  customer_category_name STRING
-  buying_group_key INT
-  buying_group_name STRING
-  delivery_method_key INT
-  delivery_method_name STRING
-  delivery_city_key INT
-  delivery_city_name STRING
-  postal_city_key INT
-  postal_city_name STRING
-  primary_contact_person_key INT
-  primary_full_name STRING
-  alternate_contact_person_key INT
-  alternate_full_name STRING
-  bill_to_customer_key INT
-  bill_to_customer_name STRING
-}
 
 Table dim_date {
   date date [pk]
