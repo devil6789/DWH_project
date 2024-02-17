@@ -9,6 +9,7 @@ WITH fact_purchase_order__source AS (
         , supplier_id AS supplier_key
         , delivery_method_id AS delivery_method_key
         , contact_person_id AS contact_person_key
+        , order_date
         , expected_delivery_date
         , is_order_finalized AS is_order_finalized_boolean
         , comments AS order_comments
@@ -22,6 +23,7 @@ WITH fact_purchase_order__source AS (
         , CAST(supplier_key AS INT) AS supplier_key 
         , CAST(delivery_method_key AS INT) AS delivery_method_key 
         , CAST(contact_person_key AS INT) AS contact_person_key 
+        , CAST(order_date AS DATE) AS order_date
         , CAST(expected_delivery_date AS DATE) AS expected_delivery_date 
         , CAST(is_order_finalized_boolean AS BOOLEAN) AS is_order_finalized_boolean 
         , CAST(order_comments AS STRING) AS order_comments 
@@ -47,6 +49,7 @@ WITH fact_purchase_order__source AS (
         , supplier_key
         , delivery_method_key
         , contact_person_key
+        , COALESCE(order_date, '2012-01-01') AS order_date
         , COALESCE(expected_delivery_date, '2012-01-01') AS expected_delivery_date
         , is_order_finalized_boolean
         , COALESCE(order_comments, 'Undefined') AS order_comments
@@ -54,10 +57,15 @@ WITH fact_purchase_order__source AS (
         , COALESCE(is_order_finalized, 'Undefined') AS is_order_finalized
     FROM `fact_purchase_order__handle_boolean`
 )
-
-
-
-
-
-    SELECT *
+    SELECT
+        purchase_order_key
+        , supplier_key
+        , delivery_method_key
+        , contact_person_key
+        , order_date
+        , expected_delivery_date
+        , is_order_finalized_boolean
+        , is_order_finalized
+        , order_comments
+        , order_internal_comments
     FROM `fact_purchase_order__handle_null`

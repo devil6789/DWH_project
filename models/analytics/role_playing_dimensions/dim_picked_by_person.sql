@@ -1,6 +1,6 @@
 WITH picked_by_person__source AS (
     SELECT *
-    FROM `learn-dwh-411512.wide_world_importers_dwh.dim_person`
+    FROM {{ ref("dim_person") }}
 )
 
 , picked_by_person__rename AS (
