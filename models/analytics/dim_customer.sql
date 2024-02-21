@@ -141,7 +141,33 @@ WITH dim_customer__source AS (
 )
 
 , dim_customer__add_invald_undefined AS (    
-    SELECT *
+    SELECT 
+        customer_key
+        , customer_name
+        , is_statement_sent
+        , is_on_credit_hold
+        , standard_discount_percentage
+        , customer_payment_days
+        , credit_limit
+        , account_opened_date
+        , customer_category_key
+        , customer_category_name
+        , buying_group_key
+        , buying_group_name
+        , delivery_method_key
+        , delivery_method_name
+        , delivery_city_key
+        , delivery_state_province_key
+        , delivery_state_province_name
+        , delivery_sales_territory
+        , delivery_country_key
+        , delivery_country_name
+        , primary_contact_person_key
+        , primary_full_name
+        , alternate_contact_person_key
+        , alternate_full_name
+        , bill_to_customer_key
+        , bill_to_customer_name
     FROM `dim_customer__join`
 
     UNION ALL
