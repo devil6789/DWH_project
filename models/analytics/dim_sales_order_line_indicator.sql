@@ -1,7 +1,11 @@
 with dim_is_undersupply_backordered__source AS (
-    SELECT 'TRUE' AS is_undersupply_backordered_boolean,'Undersupply Backordered' AS is_undersupply_backordered
+    SELECT 
+        'TRUE' AS is_undersupply_backordered_boolean
+        ,'Undersupply Backordered' AS is_undersupply_backordered
     UNION ALL 
-    SELECT 'FALSE' AS is_undersupply_backordered_boolean,'Not Undersupply Backordered' AS is_undersupply_backordered
+    SELECT 
+        'FALSE' AS is_undersupply_backordered_boolean
+        ,'Not Undersupply Backordered' AS is_undersupply_backordered
 )
 
     SELECT 
