@@ -91,27 +91,27 @@ WITH dim_customer__source AS (
         , dim_customer.buying_group_key
         , dim_customer_buying_group.buying_group_name
         , dim_customer.delivery_method_key
-        , dim_delivery_method.delivery_method_name
+        , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
         , dim_customer.delivery_city_key
-        , dim_delivery_city.city_name AS delivery_city_name
-        , dim_delivery_city.state_province_key AS delivery_state_province_key
-        , dim_delivery_city.state_province_name AS delivery_state_province_name
-        , dim_delivery_city.sales_territory AS delivery_sales_territory
-        , dim_delivery_city.country_key AS delivery_country_key
-        , dim_delivery_city.country_name AS delivery_country_name
+        , COALESCE(dim_delivery_city.city_name, 'Invalid') AS delivery_city_name
+        , COALESCE(dim_delivery_city.state_province_key, 'Invalid') AS delivery_state_province_key
+        , COALESCE(dim_delivery_city.state_province_name, 'Invalid') AS delivery_state_province_name
+        , COALESCE(dim_delivery_city.sales_territory, 'Invalid') AS delivery_sales_territory
+        , COALESCE(dim_delivery_city.country_key, 'Invalid') AS delivery_country_key
+        , COALESCE(dim_delivery_city.country_name, 'Invalid') AS delivery_country_name
         , dim_customer.postal_city_key
-        , dim_postal_city.city_name AS postal_city_name
-        , dim_postal_city.state_province_key AS postal_state_province_key
-        , dim_postal_city.state_province_name AS postal_state_province_name
-        , dim_postal_city.sales_territory AS postal_sales_territory
-        , dim_postal_city.country_key AS postal_country_key
-        , dim_postal_city.country_name AS postal_country_name      
+        , COALESCE(dim_postal_city.city_name) AS postal_city_name
+        , COALESCE(dim_postal_city.state_province_key) AS postal_state_province_key
+        , COALESCE(dim_postal_city.state_province_name) AS postal_state_province_name
+        , COALESCE(dim_postal_city.sales_territory) AS postal_sales_territory
+        , COALESCE(dim_postal_city.country_key) AS postal_country_key
+        , COALESCE(dim_postal_city.country_name) AS postal_country_name      
         , dim_customer.primary_contact_person_key
-        , dim_primary_contact_person.full_name AS primary_full_name
+        , COALESCE(dim_primary_contact_person.full_name, 'Invalid') AS primary_full_name
         , dim_customer.alternate_contact_person_key
-        , dim_alternate_contact_person.full_name AS alternate_full_name
+        , COALESCE(dim_alternate_contact_person.full_name, 'Invalid') AS alternate_full_name
         , dim_customer.bill_to_customer_key
-        , dim_bill_to_customer.customer_name AS bill_to_customer_name
+        , COALESCE(dim_bill_to_customer.customer_name, 'Invalid') AS bill_to_customer_name
                 
         
     FROM `dim_customer__handle_boolean` AS dim_customer
