@@ -78,14 +78,80 @@ WITH dim_product__source AS (
 )
 
 , dim_product__add_undefined_invalid AS (
-    SELECT *
+    SELECT
+        product_key
+        , product_name
+        , brand_name
+        , product_size
+        , quantity_per_outer
+        , tax_rate
+        , unit_price
+        , recommended_retail_price
+        , lead_time_days
+        , supplier_key
+        , supplier_name
+        , supplier_payment_days
+        , supplier_category_key
+        , supplier_category_name
+        , delivery_method_key
+        , delivery_method_name
+        , colour_key
+        , colour_name
+        , unit_package_type_key
+        , unit_package_type_name
+        , outer_package_type_key
+        , outer_package_type_name
     FROM `dim_product__join`
 
     UNION ALL 
-    SELECT 0, 'Undefined', 'Undefined', 'Undefined', 0, 0, 0, 0, 0, 0, 'Undefined', 0, 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined'
+    SELECT 
+        0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 0
+        , 0
+        , 0
+        , 0
+        , 0
+        , 0
+        , 'Undefined'
+        , 0
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
 
     UNION ALL 
-    SELECT -1, 'Invalid', 'Invalid', 'Invalid', -1, -1, -1, -1, -1, -1, 'Invalid', -1, -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid'
+    SELECT 
+        -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , -1
+        , -1
+        , -1
+        , -1
+        , -1
+        , -1
+        , 'Invalid'
+        , -1
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
 )
 
 , dim_product__handle_null AS (
