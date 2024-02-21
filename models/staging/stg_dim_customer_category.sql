@@ -17,10 +17,16 @@ WITH dim_customer_category__source AS (
     FROM `dim_customer_category__rename`
 )
 
-    SELECT *
+    SELECT 
+        customer_category_key
+        , customer_category_name
     FROM `dim_customer_category__cast_type`
     UNION ALL
-    SELECT 0, 'Undefined'
+    SELECT 
+        0
+        , 'Undefined'
 
     UNION ALL
-    SELECT -1, 'Invalid'
+    SELECT 
+        -1
+        , 'Invalid'
