@@ -21,7 +21,11 @@ WITH dim_delivery_method__source AS (
         , delivery_method_name
     FROM `dim_delivery_method__cast_type`
     UNION ALL
-    SELECT 0, 'Undefined'
+    SELECT 
+        0
+        , 'Undefined'
 
     UNION ALL
-    SELECT -1, 'Invalid'
+    SELECT 
+        -1
+        , 'Invalid'
