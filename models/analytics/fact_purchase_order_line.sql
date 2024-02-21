@@ -96,6 +96,13 @@ WITH fact_purchase_order_line__source AS (
     FROM `fact_purchase_order_line__join`
 )
 
+, fact_purchase_order_line__create_indicator_key AS (
+    SELECT
+        *
+        , FARM_FINGERPRINT(CONCAT(is_order_finalized, ", ", is_order_line_finalized)) AS purchase_order_line_indicator_key
+    FROM `fact_purchase_order_line__calculated_measure`
+)
+
     SELECT
         purchase_order_line_key
         , description
@@ -105,10 +112,7 @@ WITH fact_purchase_order_line__source AS (
         , order_date
         , order_expected_delivery_date
         , last_receipt_date
-        , is_order_finalized_boolean
-        , is_order_finalized
-        , is_order_line_finalized_boolean
-        , is_order_line_finalized
+        , FARM_FINGERPRINT(CONCAT(is_order_finalized, ", ", is_order_line_finalized)) AS purchase_order_line_indicator_key
         , order_comments
         , order_internal_comments
         , ordered_outers
