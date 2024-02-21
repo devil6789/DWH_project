@@ -24,10 +24,14 @@ WITH dim_package_type__source AS (
     FROM `dim_package_type__cast_type`
 
     UNION ALL
-    SELECT 0, 'Undefined'
+    SELECT 
+        0
+        , 'Undefined'
 
     UNION ALL
-    SELECT -1, 'Invalid'
+    SELECT 
+        -1
+        , 'Invalid'
 )
 
     SELECT
