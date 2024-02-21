@@ -3,7 +3,8 @@ Table fact_purchase_order_line {
   description STRING
   purchase_order_key INT
   contact_person_key INT
-  product_key INT
+  product_key int
+  purchase_order_line_indicator_key int
   order_date DATE
   ordered_outers INT
   received_outers INT
@@ -59,9 +60,17 @@ Table dim_product {
   outer_package_type_name STRING
 }
 
+Table dim_purchase_order_line_indicator {
+  purchase_order_line_indicator_key int
+  is_order_finalized_boolean boolean
+  is_order_finalized string
+  is_order_line_finalized_boolean boolean
+  is_order_line_finalized string
+}
+
 ref: fact_purchase_order_line.contact_person_key > dim_person.person_key
 ref: fact_purchase_order_line.product_key > dim_product.product_key
 ref: fact_purchase_order_line.order_date > dim_date.date
-
+ref: fact_purchase_order_line.purchase_order_line_indicator_key > dim_purchase_order_line_indicator.purchase_order_line_indicator_key
 
 
