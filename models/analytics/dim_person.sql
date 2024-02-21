@@ -75,10 +75,28 @@ WITH dim_person__source AS (
     FROM `dim_person__handle_boolean`
 
     UNION ALL 
-    SELECT 0, 'Undefined' , 'Undefined' , 'Undefined' , 'Undefined' , 'Undefined', 'Undefined', 'Undefined', 'Undefined'
+    SELECT 
+        0
+        , 'Undefined' 
+        , 'Undefined' 
+        , 'Undefined' 
+        , 'Undefined' 
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
 
     UNION ALL 
-    SELECT -1, 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid', 'Invalid'
+    SELECT 
+        -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
 )
 
     SELECT
