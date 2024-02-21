@@ -10,6 +10,6 @@ with dim_is_undersupply_backordered__source AS (
         , package_type_name	
         , is_undersupply_backordered_boolean	
         , is_undersupply_backordered
-    FROM `learn-dwh-411512.wide_world_importers_dwh.dim_package_type` AS dim_package_type
+    FROM {{ ref("dim_package_type") }} AS dim_package_type
     CROSS JOIN dim_is_undersupply_backordered__source
     
