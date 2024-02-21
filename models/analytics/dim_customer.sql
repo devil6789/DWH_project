@@ -157,11 +157,19 @@ WITH dim_customer__source AS (
         , delivery_method_key
         , delivery_method_name
         , delivery_city_key
+        , delivery_city_name
         , delivery_state_province_key
         , delivery_state_province_name
         , delivery_sales_territory
         , delivery_country_key
         , delivery_country_name
+        , postal_city_key
+        , postal_city_name
+        , postal_state_province_key
+        , postal_state_province_name
+        , postal_sales_territory
+        , postal_country_key
+        , postal_country_name
         , primary_contact_person_key
         , primary_full_name
         , alternate_contact_person_key
@@ -171,10 +179,78 @@ WITH dim_customer__source AS (
     FROM `dim_customer__join`
 
     UNION ALL
-    SELECT 0, 'Undefined', 'Undefined', 'Undefined', 0, 0, 0, '2012-01-01', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined', 0, 'Undefined'
+    SELECT 
+        0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 0
+        , 0
+        , 0
+        , '2012-01-01'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
 
     UNION ALL
-    SELECT -1, 'Invalid', 'Invalid', 'Invalid', -1, -1, -1, '2012-01-01', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid', -1, 'Invalid'
+    SELECT 
+        -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , -1
+        , -1
+        , -1
+        , '2012-01-01'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
 
 )
 
