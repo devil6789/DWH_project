@@ -66,23 +66,23 @@ WITH fact_purchase_order_line__source AS (
         purchase_order_line.purchase_order_line_key
         , purchase_order_line.description
         , purchase_order_line.purchase_order_key
-        , purchase_order.supplier_key
-        , purchase_order.delivery_method_key
-        , purchase_order.contact_person_key
+        , COALESCE(purchase_order.supplier_key, -1) AS supplier_key
+        , COALESCE(purchase_order.delivery_method_key, -1) AS delivery_method_key
+        , COALESCE(purchase_order.contact_person_key, -1) AS contact_person_key
         , purchase_order_line.product_key
         , purchase_order_line.package_type_key
-        , purchase_order.order_date
-        , purchase_order.expected_delivery_date AS order_expected_delivery_date
+        , COALESCE(purchase_order.order_date, '2012-01-01') AS order_date
+        , COALESCE(purchase_order.expected_delivery_date, '2012-01-01') AS order_expected_delivery_date
         , purchase_order_line.last_receipt_date
         , purchase_order.is_order_finalized_boolean
-        , purchase_order.is_order_finalized
+        , COALESCE(purchase_order.is_order_finalized, 'Invalid') AS is_order_finalized
         , purchase_order_line.is_order_line_finalized_boolean
         , purchase_order_line.is_order_line_finalized
         , purchase_order_line.ordered_outers
         , purchase_order_line.received_outers
         , purchase_order_line.expected_unit_price_per_outer
-        , purchase_order.order_comments
-        , purchase_order.order_internal_comments
+        , COALESCE(purchase_order.order_comments, 'Invalid') AS order_comments
+        , COALESCE(purchase_order.order_internal_comments, 'Invalid') AS order_internal_comments
     FROM `fact_purchase_order_line__handle_null` AS purchase_order_line
       LEFT JOIN {{ ref("stg_fact_purchase_order") }} AS purchase_order
         ON purchase_order.purchase_order_key = purchase_order_line.purchase_order_key
