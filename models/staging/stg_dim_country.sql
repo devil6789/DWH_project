@@ -44,3 +44,21 @@ WITH stg_dim_country__source AS (
         , region
         , subregion
     FROM `stg_dim_country__handle_null`
+
+    UNION ALL
+    SELECT
+        0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+
+    UNION ALL
+    SELECT
+        -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
