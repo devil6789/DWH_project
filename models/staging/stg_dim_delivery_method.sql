@@ -16,10 +16,17 @@ WITH dim_delivery_method__source AS (
         , CAST(delivery_method_name AS STRING) AS delivery_method_name
     FROM `dim_delivery_method__rename`
 )
+
+, dim_delivery_method__handle_null AS (
+    SELECT
+        delivery_method_key
+        , COALESCE(delivery_method_name, 'Undefined') AS delivery_method_name
+    FROM `dim_delivery_method__cast_type`
+)
     SELECT 
         delivery_method_key
         , delivery_method_name
-    FROM `dim_delivery_method__cast_type`
+    FROM `dim_delivery_method__handle_null`
     UNION ALL
     SELECT 
         0

@@ -17,10 +17,17 @@ WITH dim_customer_category__source AS (
     FROM `dim_customer_category__rename`
 )
 
+, dim_customer_category__handle_null AS (
+    SELECT
+        customer_category_key
+        , COALESCE(customer_category_name, 'Undefined') AS customer_category_name
+    FROM `dim_customer_category__cast_type`
+)
+
     SELECT 
         customer_category_key
         , customer_category_name
-    FROM `dim_customer_category__cast_type`
+    FROM `dim_customer_category__handle_null`
     UNION ALL
     SELECT 
         0
