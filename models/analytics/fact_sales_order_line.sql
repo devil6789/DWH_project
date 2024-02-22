@@ -103,5 +103,5 @@ WITH fact_sales_order_line__source AS (
         , net_sales
         , net_tax
         , net_sales_real       
-    FROM `fact_sales_order_line__handle_null`
+    FROM `fact_sales_order_line__calculated_measure`
     
