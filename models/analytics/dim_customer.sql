@@ -108,9 +108,9 @@ WITH dim_customer__source AS (
         , dim_customer.credit_limit
         , dim_customer.account_opened_date
         , dim_customer.customer_category_key
-        , dim_customer_category.customer_category_name
+        , COALESCE(dim_customer_category.customer_category_name, 'Invalid') AS customer_category_name
         , dim_customer.buying_group_key
-        , dim_customer_buying_group.buying_group_name
+        , COALESCE(dim_customer_buying_group.buying_group_name, 'Invalid') AS buying_group_name
         , dim_customer.delivery_method_key
         , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
         , dim_customer.delivery_city_key
@@ -135,7 +135,7 @@ WITH dim_customer__source AS (
         , COALESCE(dim_bill_to_customer.customer_name, 'Invalid') AS bill_to_customer_name
                 
         
-    FROM `dim_customer__handle_boolean` AS dim_customer
+    FROM `dim_customer__handle_null` AS dim_customer
       LEFT JOIN {{ ref("stg_dim_customer_category") }} AS dim_customer_category
         ON dim_customer.customer_category_key = dim_customer_category.customer_category_key
 
