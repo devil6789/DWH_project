@@ -23,17 +23,41 @@ WITH dim_supplier__source AS (
     FROM `dim_supplier__rename`
 )
 
+, dim_supplier__handle_null AS (
+    SELECT
+        supplier_key
+        , COALESCE(supplier_name, 'Undefined') AS supplier_name 
+        , COALESCE(supplier_payment_days, 0) AS supplier_payment_days 
+        , COALESCE(supplier_category_key, 0) AS supplier_category_key 
+        , COALESCE(delivery_method_key, 0) AS delivery_method_key 
+    FROM `dim_supplier__cast_type`
+)
+
+, dim_supplier__join AS (
     SELECT 
         dim_supplier.supplier_key
         , dim_supplier.supplier_name
         , dim_supplier.supplier_payment_days
         , dim_supplier.supplier_category_key
         , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name
-        , delivery_method_key
+        , dim_supplier.delivery_method_key
         , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
-    FROM `dim_supplier__cast_type` AS dim_supplier
+    FROM `dim_supplier__handle_null` AS dim_supplier
       LEFT JOIN {{ ref("stg_dim_supplier_category") }} AS dim_supplier_category
         ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
 
       LEFT JOIN {{ ref("stg_dim_delivery_method") }} AS dim_delivery_method
         ON dim_supplier.delivery_method_key = dim_delivery_method.delivery_method_key
+)
+
+    SELECT
+        supplier_key
+        , supplier_name
+        , supplier_payment_days
+        , supplier_category_key
+        , supplier_category_name
+        , delivery_method_key
+        , delivery_method_name
+    FROM `dim_supplier__join`
+
+    
