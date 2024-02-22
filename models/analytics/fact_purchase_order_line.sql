@@ -47,7 +47,7 @@ WITH fact_purchase_order_line__source AS (
 
 , fact_purchase_order_line__handle_null AS (
     SELECT
-        COALESCE(purchase_order_line_key, 0) AS purchase_order_line_key 
+        purchase_order_line_key 
         , COALESCE(description, 'Undefined') AS description
         , COALESCE(purchase_order_key, 0) AS purchase_order_key 
         , COALESCE(product_key, 0) AS product_key 
@@ -55,9 +55,9 @@ WITH fact_purchase_order_line__source AS (
         , COALESCE(last_receipt_date, '2012-01-01') AS last_receipt_date
         , is_order_line_finalized_boolean
         , COALESCE(is_order_line_finalized, 'Undefined') AS is_order_line_finalized
-        , COALESCE(ordered_outers, 0) AS ordered_outers 
-        , COALESCE(received_outers, 0) AS received_outers 
-        , COALESCE(expected_unit_price_per_outer, 0) AS expected_unit_price_per_outer 
+        , ordered_outers 
+        , received_outers 
+        , expected_unit_price_per_outer 
     FROM `fact_purchase_order_line__handle_boolean`
 )
 
