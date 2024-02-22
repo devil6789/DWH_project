@@ -29,3 +29,19 @@ WITH dim_is_order_finalized__source AS (
         , is_order_line_finalized
     FROM `dim_is_order_finalized__source`
     CROSS JOIN `dim_is_order_line_finalized__source`
+
+    UNION ALL 
+    SELECT
+        0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+
+    UNION ALL
+    SELECT
+        -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'    
