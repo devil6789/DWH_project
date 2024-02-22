@@ -21,6 +21,14 @@ WITH stg_dim_city__source AS (
 
 , stg_dim_city__handle_null AS (
     SELECT
+        city_key
+        , COALESCE(city_name, 'Invalid') AS city_name
+        , COALESCE(state_province_key, 0) AS state_province_key
+    FROM `stg_dim_city__cast_type`
+)
+
+, stg_dim_city__join AS (
+    SELECT
         dim_city.city_key
         , dim_city.city_name
         , dim_city.state_province_key
@@ -32,7 +40,7 @@ WITH stg_dim_city__source AS (
         , COALESCE(dim_state_province.continent, 'Invalid') AS continent  
         , COALESCE(dim_state_province.region, 'Invalid') AS region  
         , COALESCE(dim_state_province.subregion, 'Invalid') AS subregion         
-    FROM `stg_dim_city__cast_type` AS dim_city
+    FROM `stg_dim_city__handle_null` AS dim_city
       LEFT JOIN {{ ref("stg_dim_state_province") }} AS dim_state_province
         ON dim_city.state_province_key = dim_state_province.state_province_key
 )
@@ -49,6 +57,6 @@ WITH stg_dim_city__source AS (
         , continent
         , region
         , subregion
-    FROM `stg_dim_city__handle_null`
+    FROM `stg_dim_city__join`
 
     
