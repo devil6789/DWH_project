@@ -58,5 +58,30 @@ WITH stg_dim_state_province__source AS (
         , subregion
     FROM `stg_dim_state_province__join`
 
+    UNION ALL
+    SELECT
+        0
+        , 'Undefined'
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+
+    UNION ALL
+    SELECT
+        -1
+        , 'Invalid'
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+
+
 
     
