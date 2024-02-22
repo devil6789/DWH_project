@@ -46,9 +46,9 @@ WITH fact_purchase_order__source AS (
 , fact_purchase_order__handle_null AS (
     SELECT
         purchase_order_key
-        , supplier_key
-        , delivery_method_key
-        , contact_person_key
+        , COALESCE(supplier_key, 0) AS supplier_key
+        , COALESCE(delivery_method_key, 0) AS delivery_method_key
+        , COALESCE(contact_person_key, 0) AS contact_person_key
         , COALESCE(order_date, '2012-01-01') AS order_date
         , COALESCE(expected_delivery_date, '2012-01-01') AS expected_delivery_date
         , is_order_finalized_boolean
