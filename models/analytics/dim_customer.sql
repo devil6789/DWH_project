@@ -76,6 +76,27 @@ WITH dim_customer__source AS (
     FROM `dim_customer__cast_type`
 )
 
+, dim_customer__handle_null AS (
+    SELECT
+        customer_key
+        , COALESCE(customer_name, 'Undefined') AS customer_name
+        , COALESCE(is_statement_sent, 'Undefined') AS is_statement_sent
+        , COALESCE(is_on_credit_hold, 'Undefined') AS is_on_credit_hold
+        , standard_discount_percentage
+        , customer_payment_days
+        , credit_limit
+        , COALESCE(account_opened_date, '2012-01-01') AS account_opened_date 
+        , COALESCE(customer_category_key, 0) AS customer_category_key 
+        , COALESCE(buying_group_key, 0) AS buying_group_key 
+        , COALESCE(delivery_method_key, 0) AS delivery_method_key 
+        , COALESCE(delivery_city_key, 0) AS delivery_city_key 
+        , COALESCE(postal_city_key, 0) AS postal_city_key 
+        , COALESCE(primary_contact_person_key, 0) AS primary_contact_person_key 
+        , COALESCE(alternate_contact_person_key, 0) AS alternate_contact_person_key 
+        , COALESCE(bill_to_customer_key, 0) AS bill_to_customer_key 
+    FROM `dim_customer__handle_boolean`
+)
+
 , dim_customer__join AS (
     SELECT
         dim_customer.customer_key
