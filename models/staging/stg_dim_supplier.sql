@@ -59,5 +59,24 @@ WITH dim_supplier__source AS (
         , delivery_method_key
         , delivery_method_name
     FROM `dim_supplier__join`
+    UNION ALL
+    SELECT 
+        0
+        , 'Undefined'
+        , 0
+        , 0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+   
+    UNION ALL
+    SELECT 
+        -1
+        , 'Invalid'
+        , -1
+        , -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
 
     
