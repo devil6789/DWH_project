@@ -17,7 +17,14 @@ WITH dim_colour__source AS (
     FROM `dim_colour__rename`
 )
 
+, dim_colour__handle_null AS (
+    SELECT
+        colour_key
+        , COALESCE(colour_name, 'Undefined') AS colour_name
+    FROM `dim_colour__cast_type`
+)
+
     SELECT 
         colour_key
         , colour_name
-    FROM `dim_colour__cast_type`
+    FROM `dim_colour__handle_null`
