@@ -109,7 +109,7 @@ WITH dim_person__source AS (
 )
 
     SELECT
-        COALESCE(person_key, 0) AS person_key
+        person_key
         , COALESCE(full_name, 'Undefined') AS full_name 
         , COALESCE(preferred_name, 'Undefined') AS preferred_name 
         ,	COALESCE(search_name, 'Undefined') AS search_name 
