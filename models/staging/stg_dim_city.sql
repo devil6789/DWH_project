@@ -22,7 +22,7 @@ WITH stg_dim_city__source AS (
 , stg_dim_city__handle_null AS (
     SELECT
         city_key
-        , COALESCE(city_name, 'Invalid') AS city_name
+        , COALESCE(city_name, 'Undefined') AS city_name
         , COALESCE(state_province_key, 0) AS state_province_key
     FROM `stg_dim_city__cast_type`
 )

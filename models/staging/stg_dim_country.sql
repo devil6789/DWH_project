@@ -25,6 +25,17 @@ WITH stg_dim_country__source AS (
     FROM `stg_dim_country__rename`
 )
 
+, stg_dim_country__handle_null AS (
+    SELECT
+        country_key
+        , COALESCE(country_name, 'Undefined') AS country_name 
+        , COALESCE(formal_name, 'Undefined') AS formal_name 
+        , COALESCE(continent, 'Undefined') AS continent 
+        , COALESCE(region, 'Undefined') AS region 
+        , COALESCE(subregion, 'Undefined') AS subregion 
+    FROM `stg_dim_country__cast_type`
+)
+
     SELECT
         country_key
         , country_name
@@ -32,4 +43,4 @@ WITH stg_dim_country__source AS (
         , continent
         , region
         , subregion
-    FROM `stg_dim_country__cast_type`
+    FROM `stg_dim_country__handle_null`
