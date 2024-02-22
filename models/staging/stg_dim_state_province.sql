@@ -27,11 +27,11 @@ WITH stg_dim_state_province__source AS (
         , dim_state_province.state_province_name
         , dim_state_province.sales_territory
         , dim_state_province.country_key
-        , dim_country.country_name
-        , dim_country.formal_name
-        , dim_country.continent
-        , dim_country.region
-        , dim_country.subregion
+        , COALESCE(dim_country.country_name, 'Invalid') AS country_name
+        , COALESCE(dim_country.formal_name, 'Invalid') AS formal_name
+        , COALESCE(dim_country.continent, 'Invalid') AS continent
+        , COALESCE(dim_country.region, 'Invalid') AS region
+        , COALESCE(dim_country.subregion, 'Invalid') AS subregion
     FROM `stg_dim_state_province__cast_type` AS dim_state_province
       LEFT JOIN {{ ref("stg_dim_country") }} AS dim_country
         ON dim_state_province.country_key = dim_country.country_key
