@@ -108,6 +108,7 @@ WITH dim_person__source AS (
         , 'Invalid'
 )
 
+, dim_person__handle_null AS (
     SELECT
         person_key
         , COALESCE(full_name, 'Undefined') AS full_name 
@@ -119,3 +120,18 @@ WITH dim_person__source AS (
         , COALESCE(is_employee, 'Undefined') AS is_employee 
         ,	COALESCE(is_salesperson, 'Undefined') AS is_salesperson 
     FROM `dim_person__add_undefined_invalid`
+)
+
+    SELECT
+        person_key
+        , full_name
+        , preferred_name
+        , search_name
+        , is_permitted_to_logon
+        , is_external_logon_provider
+        , is_system_user
+        , is_employee
+        , is_salesperson
+    FROM `dim_person__handle_null`
+
+    
