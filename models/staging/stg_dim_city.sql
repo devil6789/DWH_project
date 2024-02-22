@@ -59,4 +59,35 @@ WITH stg_dim_city__source AS (
         , subregion
     FROM `stg_dim_city__join`
 
+    UNION ALL
+    SELECT
+        0
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 'Undefined'
+        , 0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+
+    UNION ALL
+    SELECT
+        -1
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , 'Invalid'
+        , -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid'    
+
+    
+
+
     
