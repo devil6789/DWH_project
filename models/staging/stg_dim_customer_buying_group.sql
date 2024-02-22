@@ -17,12 +17,19 @@ WITH stg_dim_customer_buying_group__source AS (
     FROM `stg_dim_customer_buying_group__rename`
 )
 
+, stg_dim_customer_buying_group__handle_null AS (
+    SELECT
+        buying_group_key
+        , COALESCE(buying_group_name, 'Undefined') AS buying_group_name
+    FROM `stg_dim_customer_buying_group__cast_type`
+)
+
 
 
     SELECT
         buying_group_key
         , buying_group_name
-    FROM `stg_dim_customer_buying_group__cast_type`
+    FROM `stg_dim_customer_buying_group__handle_null`
     UNION ALL
     SELECT 
         0
