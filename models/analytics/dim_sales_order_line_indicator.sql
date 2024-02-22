@@ -16,4 +16,20 @@ with dim_is_undersupply_backordered__source AS (
         , is_undersupply_backordered
     FROM {{ ref("dim_package_type") }} AS dim_package_type
     CROSS JOIN dim_is_undersupply_backordered__source
+
+    UNION ALL 
+    SELECT
+        0
+        , 0
+        , 'Undefined'
+        , 'Undefined'
+        , 'Undefined'
+
+    UNION ALL
+    SELECT
+        -1
+        , -1
+        , 'Invalid'
+        , 'Invalid'
+        , 'Invalid' 
     
