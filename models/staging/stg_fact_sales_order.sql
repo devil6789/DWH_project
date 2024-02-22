@@ -37,7 +37,7 @@ WITH fact_sales_order__source AS (
 
 , fact_sales_order__handle_boolean AS (
     -- SELECT * EXCEPT(is_undersupply_backordered_boolean)
-       SELECT *
+    SELECT *
         , CASE
             WHEN is_undersupply_backordered_boolean IS TRUE THEN 'Undersupply Backordered' 
             WHEN is_undersupply_backordered_boolean IS FALSE THEN 'Not Undersupply Backordered'  
@@ -46,6 +46,25 @@ WITH fact_sales_order__source AS (
           END AS is_undersupply_backordered
     FROM `fact_sales_order__cast_type`
 )
+
+, fact_sales_order__handle_null AS (
+    SELECT
+        sales_order_key
+        , COALESCE(customer_key, 0) AS customer_key
+        , COALESCE(sales_person_key, 0) AS sales_person_key
+        , COALESCE(picked_by_person_key, 0) AS picked_by_person_key
+        , COALESCE(contact_person_key, 0) AS contact_person_key
+        , COALESCE(backorder_order_key, 0) AS backorder_order_key
+        , COALESCE(order_date, '2012-01-01') AS order_date
+        , COALESCE(order_expected_delivery_date, '2012-01-01') AS order_expected_delivery_date
+        , COALESCE(order_picking_completed_when, '2012-01-01') AS order_picking_completed_when
+        , is_undersupply_backordered_boolean
+        , COALESCE(is_undersupply_backordered, 'Undefined') AS is_undersupply_backordered 
+        , COALESCE(customer_purchase_order_number, 'Undefined') AS customer_purchase_order_number 
+    FROM `fact_sales_order__handle_boolean`
+
+)
+
     SELECT
         sales_order_key
         , customer_key
@@ -59,4 +78,4 @@ WITH fact_sales_order__source AS (
         , is_undersupply_backordered_boolean
         , is_undersupply_backordered
         , customer_purchase_order_number
-    FROM `fact_sales_order__handle_boolean`
+    FROM `fact_sales_order__handle_null`
