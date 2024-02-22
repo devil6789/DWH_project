@@ -16,7 +16,14 @@ WITH dim_supplier_category__source AS (
         , CAST(supplier_category_name AS STRING) AS supplier_category_name
     FROM `dim_supplier_category__rename`
 )
+
+, dim_supplier_category__handle_null AS (
+    SELECT
+        supplier_category_key
+        , COALESCE(supplier_category_name, 'Undefined') AS supplier_category_name
+    FROM `dim_supplier_category__cast_type`
+)
     SELECT 
         supplier_category_key
         , supplier_category_name
-    FROM `dim_supplier_category__cast_type`
+    FROM `dim_supplier_category__handle_null`
