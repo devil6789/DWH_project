@@ -35,7 +35,7 @@ WITH dim_package_type__source AS (
 )
 
     SELECT
-        COALESCE(package_type_key, 0) AS package_type_key
+        package_type_key
         , COALESCE(package_type_name, 'Undefined') AS package_type_name
     FROM `dim_package_type__add_undefined_invalid`
 
