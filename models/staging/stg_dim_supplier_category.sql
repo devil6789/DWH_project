@@ -27,3 +27,13 @@ WITH dim_supplier_category__source AS (
         supplier_category_key
         , supplier_category_name
     FROM `dim_supplier_category__handle_null`
+    UNION ALL
+    SELECT 
+        0
+        , 'Undefined'
+
+    UNION ALL
+    SELECT 
+        -1
+        , 'Invalid'
+
