@@ -310,7 +310,8 @@ WITH dim_customer__source AS (
         , alternate_full_name
         , bill_to_customer_key
         , bill_to_customer_name
-    FROM `dim_customer__join`
+    FROM `dim_customer__add_invald_undefined`
+    
 
          
          
