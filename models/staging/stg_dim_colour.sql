@@ -28,3 +28,13 @@ WITH dim_colour__source AS (
         colour_key
         , colour_name
     FROM `dim_colour__handle_null`
+
+    UNION ALL
+    SELECT
+        0
+        , 'Undefined'
+
+    UNION ALL
+    SELECT
+        -1
+        , 'Invalid'
