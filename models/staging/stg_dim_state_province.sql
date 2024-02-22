@@ -21,7 +21,16 @@ WITH stg_dim_state_province__source AS (
     FROM `stg_dim_state_province__rename`
 )
 
+, stg_dim_state_province__handle_null AS (
+    SELECT
+        state_province_key
+        , COALESCE(state_province_name, 'Undefined') AS state_province_name 
+        , COALESCE(sales_territory, 'Undefined') AS sales_territory 
+        , COALESCE(country_key, 0) AS country_key 
+    FROM `stg_dim_state_province__cast_type`
+)
 
+, stg_dim_state_province__join AS (
     SELECT
         dim_state_province.state_province_key
         , dim_state_province.state_province_name
@@ -32,6 +41,22 @@ WITH stg_dim_state_province__source AS (
         , COALESCE(dim_country.continent, 'Invalid') AS continent
         , COALESCE(dim_country.region, 'Invalid') AS region
         , COALESCE(dim_country.subregion, 'Invalid') AS subregion
-    FROM `stg_dim_state_province__cast_type` AS dim_state_province
+    FROM `stg_dim_state_province__handle_null` AS dim_state_province
       LEFT JOIN {{ ref("stg_dim_country") }} AS dim_country
         ON dim_state_province.country_key = dim_country.country_key
+)
+
+    SELECT
+        state_province_key
+        , state_province_name
+        , sales_territory
+        , country_key
+        , country_name
+        , formal_name
+        , continent
+        , region
+        , subregion
+    FROM `stg_dim_state_province__join`
+
+
+    
