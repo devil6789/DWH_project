@@ -51,18 +51,18 @@ WITH dim_product__source AS (
         , dim_product.recommended_retail_price
         , dim_product.lead_time_days
         , dim_product.supplier_key
-        , dim_supplier.supplier_name
-        , dim_supplier.supplier_payment_days
-        , dim_supplier.supplier_category_key
-        , dim_supplier.supplier_category_name
-        , dim_supplier.delivery_method_key
-        , dim_supplier.delivery_method_name
+        , COALESCE(dim_supplier.supplier_name, 'Invalid') AS supplier_name 
+        , COALESCE(dim_supplier.supplier_payment_days, -1) AS supplier_payment_days 
+        , COALESCE(dim_supplier.supplier_category_key, -1) AS supplier_category_key 
+        , COALESCE(dim_supplier.supplier_category_name, 'Invalid') AS supplier_category_name 
+        , COALESCE(dim_supplier.delivery_method_key, -1) AS delivery_method_key 
+        , COALESCE(dim_supplier.delivery_method_name, 'Invalid') AS delivery_method_name 
         , dim_product.colour_key
-        , dim_colour.colour_name
+        , COALESCE(dim_colour.colour_name, 'Invalid') AS colour_name
         , dim_product.unit_package_key AS unit_package_type_key
-        , dim_unit_package_type.package_type_name AS unit_package_type_name
+        , COALESCE(dim_unit_package_type.package_type_name, 'Invalid') AS unit_package_type_name
         , dim_product.outer_package_key AS outer_package_type_key
-        , dim_outer_package_type.package_type_name AS outer_package_type_name
+        , COALESCE(dim_outer_package_type.package_type_name, 'Invalid') AS outer_package_type_name
     FROM `dim_product__cast_type` AS dim_product
       LEFT JOIN {{ ref("stg_dim_supplier") }} AS dim_supplier
         ON dim_product.supplier_key = dim_supplier.supplier_key
@@ -156,7 +156,7 @@ WITH dim_product__source AS (
 
 , dim_product__handle_null AS (
     SELECT 
-        COALESCE(product_key, 0) AS product_key
+        product_key
         , COALESCE(product_name, 'Undefined') AS product_name
         , COALESCE(brand_name, 'Undefined') AS brand_name
         , COALESCE(product_size, 'Undefined') AS product_size
@@ -165,18 +165,18 @@ WITH dim_product__source AS (
         , COALESCE(unit_price, 0) AS unit_price
         , COALESCE(recommended_retail_price, 0) AS recommended_retail_price
         , COALESCE(lead_time_days, 0) AS lead_time_days
-        , COALESCE(supplier_key, 0) AS supplier_key
+        , supplier_key
         , COALESCE(supplier_name, 'Undefined') AS supplier_name
         , COALESCE(supplier_payment_days, 0) AS supplier_payment_days
-        , COALESCE(supplier_category_key, 0) AS supplier_category_key
+        , supplier_category_key
         , COALESCE(supplier_category_name, 'Undefined') AS supplier_category_name
-        , COALESCE(delivery_method_key, 0) AS delivery_method_key
+        , delivery_method_key
         , COALESCE(delivery_method_name, 'Undefined') AS delivery_method_name
-        , COALESCE(colour_key, 0) AS colour_key
+        , colour_key
         , COALESCE(colour_name, 'Undefined') AS colour_name
-        , COALESCE(unit_package_type_key, 0) AS unit_package_type_key
+        , unit_package_type_key
         , COALESCE(unit_package_type_name, 'Undefined') AS unit_package_type_name
-        , COALESCE(outer_package_type_key, 0) AS outer_package_type_key
+        , outer_package_type_key
         , COALESCE(outer_package_type_name, 'Undefined') AS outer_package_type_name
     FROM `dim_product__add_undefined_invalid`
 )
