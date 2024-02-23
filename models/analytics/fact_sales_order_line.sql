@@ -89,7 +89,6 @@ WITH fact_sales_order_line__source AS (
         , picked_by_person_key
         , contact_person_key
         , backorder_order_key
-        
         , FARM_FINGERPRINT(CONCAT(package_type_key, ',', is_undersupply_backordered)) AS sales_order_line_indicator_key
         , order_date
         , order_expected_delivery_date

@@ -7,20 +7,20 @@ WITH fact_target_salesperson__source AS (
     SELECT
         year_month
         , salesperson_person_id AS salesperson_person_key
-        , target_revenue
+        , target_revenue AS target_net_sales
     FROM `fact_target_salesperson__source`
 )
 
 , fact_target_salesperson__cast_type AS (
     SELECT
-        CAST(year_month AS DATE) AS year_month         
+        CAST(year_month AS DATE) AS year_month     
         , CAST(salesperson_person_key AS INT) AS salesperson_person_key 
-        , CAST(target_revenue AS NUMERIC) AS target_revenue 
+        , CAST(target_net_sales AS NUMERIC) AS target_net_sales 
     FROM `fact_target_salesperson__rename`
 )
 
     SELECT
-        year_month
+        date_trunc(year_month, month) AS year_month
         , salesperson_person_key
-        , target_revenue
+        , target_net_sales
     FROM `fact_target_salesperson__cast_type`
