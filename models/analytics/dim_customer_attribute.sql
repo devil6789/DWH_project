@@ -22,9 +22,9 @@ WITH dim_customer_attribute__source AS (
 
 , dim_customer_attribute__calculate_recency AS (
     SELECT *
-        , DATE_DIFF(CURRENT_DATE(), last_active_date, day) AS lifetime_recency
+        , DATE_DIFF('2016-05-31', last_active_date, day) AS lifetime_recency
         , CASE 
-            WHEN DATE_DIFF(CURRENT_DATE(), last_active_date, day) <= 365 THEN 'Does Buy'
+            WHEN DATE_DIFF('2016-05-31', last_active_date, day) <= 365 THEN 'Does Buy'
             ELSE 'Does Not Buy'
           END AS does_buy_in_last_12_months
     FROM `dim_customer_attribute__group_by`
