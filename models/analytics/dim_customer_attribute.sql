@@ -9,12 +9,12 @@ WITH dim_customer_attribute__source AS (
         , MAX(order_date) AS last_active_date
         , SUM(net_sales) AS lifetime_monetary
         , SUM(CASE
-                WHEN order_date BETWEEN CURRENT_DATE() - INTERVAL 1 YEAR AND CURRENT_DATE THEN net_sales
+                WHEN order_date BETWEEN (DATE_TRUNC('2016-05-31', MONTH) - INTERVAL 12 MONTH) AND '2016-05-31' THEN net_sales
                 ELSE 0
               END) AS last_12_months_monetary
         , COUNT(DISTINCT order_date) AS lifetime_frequency
         , COUNT(DISTINCT CASE
-                WHEN order_date BETWEEN CURRENT_DATE() - INTERVAL 1 YEAR AND CURRENT_DATE THEN order_date
+                WHEN order_date BETWEEN (DATE_TRUNC('2016-05-31', MONTH) - INTERVAL 12 MONTH) AND '2016-05-31' THEN order_date
               END) AS last_12_months_frequency
     FROM `dim_customer_attribute__source`
     GROUP BY 1
