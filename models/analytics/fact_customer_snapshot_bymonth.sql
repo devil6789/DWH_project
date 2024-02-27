@@ -42,12 +42,12 @@ WITH fact_customer_snapshot_bymonth__source AS (
 
 , fact_customer_snapshot_bymonth__calculate_percent AS (
     SELECT *
-        , PERCENT_RANK() OVER (ORDER BY recency) AS recency_percent
-        , PERCENT_RANK() OVER (ORDER BY frequency) AS frequency_percent
-        , PERCENT_RANK() OVER (ORDER BY monetary) AS monetary_percent
-        , PERCENT_RANK() OVER (ORDER BY lifetime_recency) AS lifetime_recency_percent
-        , PERCENT_RANK() OVER (ORDER BY lifetime_frequency) AS lifetime_frequency_percent
-        , PERCENT_RANK() OVER (ORDER BY lifetime_monetary) AS lifetime_monetary_percent
+        , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY recency) AS recency_percent
+        , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY frequency) AS frequency_percent
+        , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY monetary) AS monetary_percent
+        , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY lifetime_recency) AS lifetime_recency_percent
+        , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY lifetime_frequency) AS lifetime_frequency_percent
+        , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY lifetime_monetary) AS lifetime_monetary_percent
     FROM `fact_customer_snapshot_bymonth__add_lifetime_values`
 )
 
@@ -161,7 +161,7 @@ WITH fact_customer_snapshot_bymonth__source AS (
         customer_key
         , year_month
         , last_active_day
-        , year_month_1_following
+        -- , year_month_1_following
         , recency
         , lifetime_recency
         , frequency
