@@ -3,16 +3,41 @@ WITH fact_customer_snapshot_bymonth__source AS (
     FROM {{ ref("fact_sales_order_line") }}
 )
 
+, stg_take_customer_key AS (
+  SELECT DISTINCT customer_key
+  FROM `learn-dwh-411512.wide_world_importers_dwh.fact_sales_order_line`
+)
+
+, dim_date__source AS (
+    SELECT *
+    FROM unnest(generate_date_array('2013-01-01', '2016-05-31', interval 1 DAY)) AS DATE
+)
+
+, stg_take_year_month AS (
+  SELECT
+      DISTINCT date_trunc(DATE, month) as year_month
+  FROM `dim_date__source`
+)
+
+, fact_customer_snapshot_bymonth__dense AS (
+    SELECT *
+    FROM `stg_take_customer_key`
+    CROSS JOIN `stg_take_year_month`
+)
+
 , fact_customer_snapshot_bymonth__summarize AS (
     SELECT
-        customer_key
-        , DATE_TRUNC(order_date, MONTH) AS year_month
-        , MAX(order_date) AS last_active_day
-        , DATE_DIFF('2016-05-31', MAX(order_date), day) AS lifetime_recency 
-        , COUNT(DISTINCT order_date) AS frequency
-        , SUM(net_sales) AS monetary
+        dense.customer_key
+        , dense.year_month
+        , MAX(source.order_date) AS last_active_day
+        , DATE_DIFF('2016-05-31', MAX(source.order_date), day) AS lifetime_recency 
+        , COUNT(DISTINCT source.order_date) AS frequency
+        , SUM(source.net_sales) AS monetary
         -- , CONCAT(product_key, ",") AS product_key
-    FROM `fact_customer_snapshot_bymonth__source`
+    FROM `fact_customer_snapshot_bymonth__dense` AS dense
+    LEFT JOIN `fact_customer_snapshot_bymonth__source` AS source
+      ON dense.customer_key = source.customer_key 
+      AND dense.year_month = DATE_TRUNC(source.order_date, MONTH)
     GROUP BY 1,2
     
 )
@@ -179,3 +204,4 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , lifetime_RFM_score
         , lifetime_customer_segment
     FROM `fact_customer_snapshot_bymonth__add_customer_segment`
+    ORDER BY 1,2
