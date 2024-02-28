@@ -5,18 +5,13 @@ WITH fact_customer_snapshot_bymonth__source AS (
 
 , stg_take_customer_key AS (
   SELECT DISTINCT customer_key
-  FROM `learn-dwh-411512.wide_world_importers_dwh.fact_sales_order_line`
-)
-
-, dim_date__source AS (
-    SELECT *
-    FROM unnest(generate_date_array('2013-01-01', '2016-05-31', interval 1 DAY)) AS DATE
+  FROM {{ ref("fact_sales_order_line") }}
 )
 
 , stg_take_year_month AS (
   SELECT
-      DISTINCT date_trunc(DATE, month) as year_month
-  FROM `dim_date__source`
+      DISTINCT date_trunc(order_date, month) as year_month
+  FROM {{ ref("fact_sales_order_line") }}
 )
 
 , fact_customer_snapshot_bymonth__dense AS (
@@ -25,12 +20,12 @@ WITH fact_customer_snapshot_bymonth__source AS (
     CROSS JOIN `stg_take_year_month`
 )
 
-, fact_customer_snapshot_bymonth__summarize AS (
+, fact_customer_snapshot_bymonth__summarize_and_join AS (
     SELECT
         dense.customer_key
         , dense.year_month
         , MAX(source.order_date) AS last_active_day
-        , DATE_DIFF('2016-05-31', MAX(source.order_date), day) AS lifetime_recency 
+        , DATE_DIFF('2016-05-31', MAX(source.order_date), day) AS lifetime_recency
         , COUNT(DISTINCT source.order_date) AS frequency
         , SUM(source.net_sales) AS monetary
         -- , CONCAT(product_key, ",") AS product_key
@@ -46,16 +41,26 @@ WITH fact_customer_snapshot_bymonth__source AS (
     SELECT
         *
         , LEAD(year_month,1) OVER (PARTITION BY customer_key ORDER BY year_month) AS year_month_1_following
-    FROM `fact_customer_snapshot_bymonth__summarize`
-)  
+    FROM `fact_customer_snapshot_bymonth__summarize_and_join`
+)
+
+, fact_customer_snapshot_bymonth__handle_null AS (
+    SELECT
+        customer_key
+        , year_month
+        , COALESCE(last_active_day, LAG(last_active_day,1) OVER (PARTITION BY customer_key ORDER BY year_month)) AS last_active_day        
+        , COALESCE(frequency, 0) AS frequency
+        , COALESCE(monetary,0) AS monetary
+        , year_month_1_following
+    FROM `fact_customer_snapshot_bymonth__add_stg_year_month`
+)
 
 , fact_customer_snapshot_bymonth__add_recency AS (
     SELECT
         *
         , DATE_DIFF(year_month_1_following, last_active_day, day) AS recency
-         
-       
-    FROM `fact_customer_snapshot_bymonth__add_stg_year_month`
+        , DATE_DIFF('2016-05-31', last_active_day, day) AS lifetime_recency       
+    FROM `fact_customer_snapshot_bymonth__handle_null`
 )
 
 , fact_customer_snapshot_bymonth__add_lifetime_values AS (
@@ -186,7 +191,7 @@ WITH fact_customer_snapshot_bymonth__source AS (
         customer_key
         , year_month
         , last_active_day
-        -- , year_month_1_following
+        , year_month_1_following
         , recency
         , lifetime_recency
         , frequency
