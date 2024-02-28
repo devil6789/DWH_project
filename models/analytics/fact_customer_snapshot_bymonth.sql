@@ -3,11 +3,6 @@ WITH fact_customer_snapshot_bymonth__source AS (
     FROM {{ ref("fact_sales_order_line") }}
 )
 
-, stg_take_customer_key AS (
-  SELECT DISTINCT customer_key
-  FROM {{ ref("fact_sales_order_line") }}
-)
-
 , stg_take_year_month AS (
   SELECT
       DISTINCT date_trunc(order_date, month) as year_month
@@ -15,9 +10,14 @@ WITH fact_customer_snapshot_bymonth__source AS (
 )
 
 , fact_customer_snapshot_bymonth__dense AS (
-    SELECT *
-    FROM `stg_take_customer_key`
+    SELECT
+        stg_take_year_month.year_month
+        , dim_customer_attribute.customer_key
+        , dim_customer_attribute.start_month
+        , dim_customer_attribute.end_month
+    FROM {{ ref("dim_customer_attribute") }} AS dim_customer_attribute
     CROSS JOIN `stg_take_year_month`
+    WHERE stg_take_year_month.year_month BETWEEN dim_customer_attribute.start_month AND dim_customer_attribute.end_month
 )
 
 , fact_customer_snapshot_bymonth__summarize_and_join AS (
