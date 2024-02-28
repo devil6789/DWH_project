@@ -68,6 +68,7 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , SUM(frequency) OVER (PARTITION BY customer_key ORDER BY year_month) AS lifetime_frequency
         , SUM(monetary) OVER (PARTITION BY customer_key ORDER BY year_month) AS lifetime_monetary
         , LAG(monetary,1) OVER (PARTITION BY customer_key ORDER BY year_month) AS last_month_monetary
+        , SUM(monetary) OVER (PARTITION BY customer_key ORDER BY year_month ROWS 11 PRECEDING) AS last_12month_monetary
     FROM `fact_customer_snapshot_bymonth__add_recency`
 )
 
@@ -199,6 +200,7 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , lifetime_frequency
         , monetary
         , last_month_monetary
+        , last_12month_monetary
         , lifetime_monetary
         , recency_score
         , frequency_score
@@ -212,4 +214,5 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , lifetime_customer_segment
         
     FROM `fact_customer_snapshot_bymonth__add_customer_segment`
+    ORDER BY 1,2
     
