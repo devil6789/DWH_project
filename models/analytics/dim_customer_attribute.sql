@@ -7,6 +7,8 @@ WITH dim_customer_attribute__source AS (
     SELECT 
         customer_key
         , MAX(order_date) AS last_active_date
+        , DATE_TRUNC(MIN(order_date), MONTH) AS start_month
+        , DATE_TRUNC(MAX(order_date), MONTH) AS end_month
         , SUM(net_sales) AS lifetime_monetary
         , SUM(CASE
                 WHEN order_date BETWEEN (DATE_TRUNC('2016-05-31', MONTH) - INTERVAL 12 MONTH) AND '2016-05-31' THEN net_sales
@@ -99,6 +101,8 @@ WITH dim_customer_attribute__source AS (
     SELECT
         customer_key
         , last_active_date
+        , start_month
+        , end_month
         , does_buy_in_last_12_months
         , lifetime_recency
         , lifetime_monetary
@@ -114,3 +118,4 @@ WITH dim_customer_attribute__source AS (
         , RFM_score
         , customer_segment
     FROM `dim_customer_attribute__add_customer_segment`
+    
