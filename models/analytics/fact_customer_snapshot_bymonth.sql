@@ -63,10 +63,11 @@ WITH fact_customer_snapshot_bymonth__source AS (
     FROM `fact_customer_snapshot_bymonth__handle_null`
 )
 
-, fact_customer_snapshot_bymonth__add_lifetime_values AS (
+, fact_customer_snapshot_bymonth__calculate_fact AS (
     SELECT *
         , SUM(frequency) OVER (PARTITION BY customer_key ORDER BY year_month) AS lifetime_frequency
         , SUM(monetary) OVER (PARTITION BY customer_key ORDER BY year_month) AS lifetime_monetary
+        , LAG(monetary,1) OVER (PARTITION BY customer_key ORDER BY year_month) AS last_month_monetary
     FROM `fact_customer_snapshot_bymonth__add_recency`
 )
 
@@ -78,7 +79,7 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY lifetime_recency) AS lifetime_recency_percent
         , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY lifetime_frequency) AS lifetime_frequency_percent
         , PERCENT_RANK() OVER (PARTITION BY year_month ORDER BY lifetime_monetary) AS lifetime_monetary_percent
-    FROM `fact_customer_snapshot_bymonth__add_lifetime_values`
+    FROM `fact_customer_snapshot_bymonth__calculate_fact`
 )
 
 , fact_customer_snapshot_bymonth__calculate_percentile AS (
@@ -197,6 +198,7 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , frequency
         , lifetime_frequency
         , monetary
+        , last_month_monetary
         , lifetime_monetary
         , recency_score
         , frequency_score
@@ -208,5 +210,6 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , lifetime_monetary_score
         , lifetime_RFM_score
         , lifetime_customer_segment
+        
     FROM `fact_customer_snapshot_bymonth__add_customer_segment`
     
