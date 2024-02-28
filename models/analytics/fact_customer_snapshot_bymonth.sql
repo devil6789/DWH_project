@@ -209,4 +209,4 @@ WITH fact_customer_snapshot_bymonth__source AS (
         , lifetime_RFM_score
         , lifetime_customer_segment
     FROM `fact_customer_snapshot_bymonth__add_customer_segment`
-    ORDER BY 1,2
+    
