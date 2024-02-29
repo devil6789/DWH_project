@@ -82,6 +82,10 @@ WITH dim_product__source AS (
         , dim_product.outer_package_key AS outer_package_type_key
         , COALESCE(dim_outer_package_type.package_type_name, 'Invalid') AS outer_package_type_name
         , COALESCE(stg_dim_product.category_key, -1) AS category_key
+        , COALESCE(dim_category.category_name, 'Invalid') AS category_name 
+        , COALESCE(dim_category.parent_category_key, -1) AS parent_category_key 
+        , COALESCE(dim_category.parent_category_name, 'Invalid') AS parent_category_name 
+        , COALESCE(dim_category.category_level, -1) AS category_level 
     FROM `dim_product__handle_null` AS dim_product
       LEFT JOIN {{ ref("stg_dim_supplier") }} AS dim_supplier
         ON dim_product.supplier_key = dim_supplier.supplier_key
@@ -97,6 +101,9 @@ WITH dim_product__source AS (
 
       LEFT JOIN {{ ref("stg_dim_product__external") }} AS stg_dim_product
         ON dim_product.product_key = stg_dim_product.product_key
+
+      LEFT JOIN {{ ref("dim_category") }} AS dim_category
+        ON stg_dim_product.category_key = dim_category.category_key
 )
 
 , dim_product__add_undefined_invalid AS (
@@ -124,6 +131,10 @@ WITH dim_product__source AS (
         , outer_package_type_key
         , outer_package_type_name
         , category_key
+        , category_name
+        , parent_category_key
+        , parent_category_name
+        , category_level
     FROM `dim_product__join`
 
     UNION ALL 
@@ -151,6 +162,11 @@ WITH dim_product__source AS (
         , 0 AS outer_package_type_key
         , 'Undefined' AS outer_package_type_name
         , 0 AS category_key
+        , 'Undefined' AS category_name
+        , 0 AS parent_category_key
+        , 'Undefined' AS parent_category_name
+        , 0 AS category_level
+        
 
     UNION ALL 
     SELECT 
@@ -177,6 +193,10 @@ WITH dim_product__source AS (
         , -1 AS outer_package_type_key
         , 'Invalid' AS outer_package_type_name
         , -1 AS category_key
+        , 'Invalid' AS category_name
+        , -1 AS parent_category_key
+        , 'Invalid' AS parent_category_name
+        , -1 AS category_level
 )
 
     SELECT
@@ -203,6 +223,10 @@ WITH dim_product__source AS (
         , outer_package_type_key
         , outer_package_type_name
         , category_key
+        , category_name
+        , parent_category_key
+        , parent_category_name
+        , category_level
     FROM `dim_product__add_undefined_invalid`
 
     
