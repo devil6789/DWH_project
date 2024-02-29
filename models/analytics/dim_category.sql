@@ -38,7 +38,7 @@ WITH dim_category__source AS (
         , COALESCE(dim_category_parent.category_name, 'Invalid') AS parent_category_name
         , dim_category.category_level
     FROM `dim_category__handle_null` AS dim_category
-    LEFT JOIN {{ ref("dim_category") }} AS dim_category_parent
+    LEFT JOIN `dim_category__handle_null` AS dim_category_parent
     ON dim_category.parent_category_key = dim_category_parent.category_key
 )
 
