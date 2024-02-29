@@ -81,6 +81,7 @@ WITH dim_product__source AS (
         , COALESCE(dim_unit_package_type.package_type_name, 'Invalid') AS unit_package_type_name
         , dim_product.outer_package_key AS outer_package_type_key
         , COALESCE(dim_outer_package_type.package_type_name, 'Invalid') AS outer_package_type_name
+        , COALESCE(stg_dim_product.category_key, -1) AS category_key
     FROM `dim_product__handle_null` AS dim_product
       LEFT JOIN {{ ref("stg_dim_supplier") }} AS dim_supplier
         ON dim_product.supplier_key = dim_supplier.supplier_key
@@ -93,6 +94,9 @@ WITH dim_product__source AS (
         
       LEFT JOIN {{ ref("dim_package_type") }} AS dim_outer_package_type
         ON dim_product.outer_package_key = dim_outer_package_type.package_type_key
+
+      LEFT JOIN {{ ref("stg_dim_product__external") }} AS stg_dim_product
+        ON dim_product.product_key = stg_dim_product.product_key
 )
 
 , dim_product__add_undefined_invalid AS (
@@ -119,57 +123,60 @@ WITH dim_product__source AS (
         , unit_package_type_name
         , outer_package_type_key
         , outer_package_type_name
+        , category_key
     FROM `dim_product__join`
 
     UNION ALL 
     SELECT 
-        0
-        , 'Undefined'
-        , 'Undefined'
-        , 'Undefined'
-        , 0
-        , 0
-        , 0
-        , 0
-        , 0
-        , 0
-        , 'Undefined'
-        , 0
-        , 0
-        , 'Undefined'
-        , 0
-        , 'Undefined'
-        , 0
-        , 'Undefined'
-        , 0
-        , 'Undefined'
-        , 0
-        , 'Undefined'
+        0 AS product_key
+        , 'Undefined' AS product_name
+        , 'Undefined' AS brand_name
+        , 'Undefined' AS product_size
+        , 0 AS quantity_per_outer
+        , 0 AS tax_rate
+        , 0 AS unit_price
+        , 0 AS recommended_retail_price
+        , 0 AS lead_time_days
+        , 0 AS supplier_key
+        , 'Undefined' AS supplier_name
+        , 0 AS supplier_payment_days
+        , 0 AS supplier_category_key
+        , 'Undefined' AS supplier_category_name
+        , 0 AS delivery_method_key
+        , 'Undefined' AS delivery_method_name
+        , 0 AS colour_key
+        , 'Undefined' AS colour_name
+        , 0 AS unit_package_type_key
+        , 'Undefined' AS unit_package_type_name
+        , 0 AS outer_package_type_key
+        , 'Undefined' AS outer_package_type_name
+        , 0 AS category_key
 
     UNION ALL 
     SELECT 
-        -1
-        , 'Invalid'
-        , 'Invalid'
-        , 'Invalid'
-        , -1
-        , -1
-        , -1
-        , -1
-        , -1
-        , -1
-        , 'Invalid'
-        , -1
-        , -1
-        , 'Invalid'
-        , -1
-        , 'Invalid'
-        , -1
-        , 'Invalid'
-        , -1
-        , 'Invalid'
-        , -1
-        , 'Invalid'
+        -1 AS product_key
+        , 'Invalid' AS product_name
+        , 'Invalid' AS brand_name
+        , 'Invalid' AS product_size
+        , -1 AS quantity_per_outer
+        , -1 AS tax_rate
+        , -1 AS unit_price
+        , -1 AS recommended_retail_price
+        , -1 AS lead_time_days
+        , -1 AS supplier_key
+        , 'Invalid' AS supplier_name
+        , -1 AS supplier_payment_days
+        , -1 AS supplier_category_key
+        , 'Invalid' AS supplier_category_name
+        , -1 AS delivery_method_key
+        , 'Invalid' AS delivery_method_name
+        , -1 AS colour_key
+        , 'Invalid' AS colour_name
+        , -1 AS unit_package_type_key
+        , 'Invalid' AS unit_package_type_name
+        , -1 AS outer_package_type_key
+        , 'Invalid' AS outer_package_type_name
+        , -1 AS category_key
 )
 
     SELECT
@@ -195,6 +202,7 @@ WITH dim_product__source AS (
         , unit_package_type_name
         , outer_package_type_key
         , outer_package_type_name
+        , category_key
     FROM `dim_product__add_undefined_invalid`
 
     
