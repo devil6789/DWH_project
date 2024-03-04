@@ -49,5 +49,4 @@ WITH dim_category__source AS (
         , category_level
         , parent_category_key
         , parent_category_name
-        , category_level
     FROM `dim_category__join`
