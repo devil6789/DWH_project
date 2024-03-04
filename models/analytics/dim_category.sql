@@ -3,6 +3,8 @@ WITH dim_category AS (
     FROM {{ ref("stg_dim_category") }}
 )
 
+, dim_category__union_all AS (
+
     SELECT
         *
         , category_key AS category_level_1_key
@@ -65,5 +67,21 @@ WITH dim_category AS (
     LEFT JOIN `dim_category` AS level_2
       ON level_3.parent_category_key = level_2.category_key 
     WHERE level_4.category_level = 4
+)
 
+    SELECT
+        category_key
+        , category_name
+        , category_level
+        , parent_category_key
+        , parent_category_name
+        , category_level_1_key
+        , category_level_1_name
+        , parent_category_level_2_key
+        , category_level_2_name
+        , category_level_3_key
+        , category_level_3_name
+        , category_level_4_key
+        , category_level_4_name         
+    FROM `dim_category__union_all`
 
