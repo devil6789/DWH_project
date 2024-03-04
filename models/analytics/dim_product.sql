@@ -86,6 +86,15 @@ WITH dim_product__source AS (
         , COALESCE(dim_category.parent_category_key, -1) AS parent_category_key 
         , COALESCE(dim_category.parent_category_name, 'Invalid') AS parent_category_name 
         , COALESCE(dim_category.category_level, -1) AS category_level 
+        , COALESCE(dim_category.category_level_1_key, -1) AS category_level_1_key 
+        , COALESCE(dim_category.category_level_1_name,'Invalid') AS category_level_1_name 
+        , COALESCE(dim_category.category_level_2_key, -1) AS category_level_2_key 
+        , COALESCE(dim_category.category_level_2_name,'Invalid') AS category_level_2_name 
+        , COALESCE(dim_category.category_level_3_key, -1) AS category_level_3_key 
+        , COALESCE(dim_category.category_level_3_name,'Invalid') AS category_level_3_name 
+        , COALESCE(dim_category.category_level_4_key, -1) AS category_level_4_key 
+        , COALESCE(dim_category.category_level_4_name,'Invalid') AS category_level_4_name
+         
     FROM `dim_product__handle_null` AS dim_product
       LEFT JOIN {{ ref("stg_dim_supplier") }} AS dim_supplier
         ON dim_product.supplier_key = dim_supplier.supplier_key
@@ -135,6 +144,14 @@ WITH dim_product__source AS (
         , parent_category_key
         , parent_category_name
         , category_level
+        , category_level_1_key
+        , category_level_1_name
+        , category_level_2_key
+        , category_level_2_name
+        , category_level_3_key
+        , category_level_3_name
+        , category_level_4_key
+        , category_level_4_name      
     FROM `dim_product__join`
 
     UNION ALL 
@@ -166,6 +183,14 @@ WITH dim_product__source AS (
         , 0 AS parent_category_key
         , 'Undefined' AS parent_category_name
         , 0 AS category_level
+        , 0 AS category_level_1_key
+        , 'Undefined' AS category_level_1_name
+        , 0 AS category_level_2_key
+        , 'Undefined' AS category_level_2_name
+        , 0 AS category_level_3_key
+        , 'Undefined' AS category_level_3_name
+        , 0 AS category_level_4_key
+        , 'Undefined' AS category_level_4_name      
         
 
     UNION ALL 
@@ -197,6 +222,14 @@ WITH dim_product__source AS (
         , -1 AS parent_category_key
         , 'Invalid' AS parent_category_name
         , -1 AS category_level
+        , -1 AS category_level_1_key
+        , 'Invalid' AS category_level_1_name
+        , -1 AS category_level_2_key
+        , 'Invalid' AS category_level_2_name
+        , -1 AS category_level_3_key
+        , 'Invalid' AS category_level_3_name
+        , -1 AS category_level_4_key
+        , 'Invalid' AS category_level_4_name      
 )
 
     SELECT
@@ -227,6 +260,14 @@ WITH dim_product__source AS (
         , parent_category_key
         , parent_category_name
         , category_level
+        , category_level_1_key
+        , category_level_1_name
+        , category_level_2_key
+        , category_level_2_name
+        , category_level_3_key
+        , category_level_3_name
+        , category_level_4_key
+        , category_level_4_name      
     FROM `dim_product__add_undefined_invalid`
 
     

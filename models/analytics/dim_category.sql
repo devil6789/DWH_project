@@ -9,7 +9,7 @@ WITH dim_category AS (
         *
         , category_key AS category_level_1_key
         , category_name AS category_level_1_name
-        , parent_category_key AS parent_category_level_2_key
+        , parent_category_key AS category_level_2_key
         , parent_category_name AS category_level_2_name
         , 0 AS category_level_3_key
         , 'Undefined' AS category_level_3_name
@@ -37,7 +37,7 @@ WITH dim_category AS (
         level_3.*
         , source.parent_category_key AS category_level_1_key
         , source.parent_category_name AS category_level_1_name
-        , level_3.parent_category_key AS parent_category_level_2_key
+        , level_3.parent_category_key AS category_level_2_key
         , level_3.parent_category_name AS category_level_2_name
         , level_3.category_key AS category_level_3_key
         , level_3.category_name AS category_level_3_name
@@ -53,7 +53,7 @@ WITH dim_category AS (
         level_4.*
         , level_2.parent_category_key AS category_level_1_key
         , level_2.parent_category_name AS category_level_1_name
-        , level_3.parent_category_key AS parent_category_level_2_key
+        , level_3.parent_category_key AS category_level_2_key
         , level_3.parent_category_name AS category_level_2_name
         , level_4.parent_category_key AS category_level_3_key
         , level_4.parent_category_name AS category_level_3_name
@@ -77,7 +77,7 @@ WITH dim_category AS (
         , parent_category_name
         , category_level_1_key
         , category_level_1_name
-        , parent_category_level_2_key
+        , category_level_2_key
         , category_level_2_name
         , category_level_3_key
         , category_level_3_name
