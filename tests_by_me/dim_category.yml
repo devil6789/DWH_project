@@ -1,0 +1,57 @@
+version 2:
+
+models:
+  - name: dim_category
+    columns: 
+      - name: category_key
+        tests: 
+          - unique
+          - not_null
+
+      - name: category_name
+        tests: 
+          - not_null
+
+      - name: category_level
+        tests: 
+          - not_null
+
+      - name: parent_category_key
+        tests: 
+          - not_null
+
+      - name: parent_category_name
+        tests: 
+          - not_null
+
+      - name: category_level_1_key
+        tests: 
+          - not_null
+
+      - name: category_level_1_name
+        tests: 
+          - not_null
+
+      - name: category_level_2_key
+        tests: 
+          - not_null
+
+      - name: category_level_2_name
+        tests: 
+          - not_null
+
+      - name: category_level_3_key
+        tests: 
+          - not_null
+
+      - name: category_level_3_name
+        tests: 
+          - not_null
+
+      - name: category_level_4_key
+        tests: 
+          - not_null
+
+      - name: category_level_4_name
+        tests: 
+          - not_null
