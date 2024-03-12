@@ -69,6 +69,7 @@ WITH dim_category AS (
     WHERE level_4.category_level = 4
 )
 
+, dim_category__add_values_undefined_invalid AS (
     SELECT
         category_key
         , category_name
@@ -84,4 +85,53 @@ WITH dim_category AS (
         , category_level_4_key
         , category_level_4_name         
     FROM `dim_category__union_all`
+
+    UNION ALL
+    SELECT
+        0 AS category_key
+        , 'Undefined' AS category_name
+        , 0 AS category_level
+        , 0 AS parent_category_key
+        , 'Undefined' AS parent_category_name
+        , 0 AS category_level_1_key
+        , 'Undefined' AS category_level_1_name
+        , 0 AS category_level_2_key
+        , 'Undefined' AS category_level_2_name
+        , 0 AS category_level_3_key
+        , 'Undefined' AS category_level_3_name
+        , 0 AS category_level_4_key
+        , 'Undefined' AS category_level_4_name
+
+    UNION ALL
+    SELECT
+        -1 AS category_key
+        , 'Invalid' AS category_name
+        , -1 AS category_level
+        , -1 AS parent_category_key
+        , 'Invalid' AS parent_category_name
+        , -1 AS category_level_1_key
+        , 'Invalid' AS category_level_1_name
+        , -1 AS category_level_2_key
+        , 'Invalid' AS category_level_2_name
+        , -1 AS category_level_3_key
+        , 'Invalid' AS category_level_3_name
+        , -1 AS category_level_4_key
+        , 'Invalid' AS category_level_4_name 
+) 
+
+    SELECT
+        category_key
+        , category_name
+        , category_level
+        , parent_category_key
+        , parent_category_name
+        , category_level_1_key
+        , category_level_1_name
+        , category_level_2_key
+        , category_level_2_name
+        , category_level_3_key
+        , category_level_3_name
+        , category_level_4_key
+        , category_level_4_name
+    FROM `dim_category__add_values_undefined_invalid`         
 
