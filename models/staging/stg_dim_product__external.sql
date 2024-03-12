@@ -21,3 +21,13 @@ WITH stg_dim_product__external AS (
         product_key
         , category_key
     FROM `stg_dim_product__cast_type`
+
+    UNION ALL
+    SELECT
+        0 AS product_key
+        , 0 AS category_key
+
+    UNION ALL
+    SELECT
+        -1 AS product_key
+        , -1 AS category_key
