@@ -98,6 +98,7 @@ WITH dim_customer_attribute__source AS (
     FROM `dim_customer_attribute__add_RFM_score`
 )
 
+, dim_customer_attribute__add_values_undefined_invalid AS (
     SELECT
         customer_key
         , last_active_date
@@ -118,4 +119,69 @@ WITH dim_customer_attribute__source AS (
         , RFM_score
         , customer_segment
     FROM `dim_customer_attribute__add_customer_segment`
+
+    UNION ALL
+    SELECT
+        0 AS customer_key
+        , '2012-01-01' AS last_active_date
+        , '2012-01-01' AS start_month
+        , '2012-01-01' AS end_month
+        , 'Undefined' AS does_buy_in_last_12_months
+        , 0 AS lifetime_recency
+        , 0 AS lifetime_monetary
+        , 0 AS last_12_months_monetary
+        , 0 AS lifetime_frequency
+        , 0 AS last_12_months_frequency
+        , 0 AS lifetime_recency_percent
+        , 0 AS lifetime_frequency_percent
+        , 0 AS lifetime_monetary_percent
+        , 0 AS lifetime_recency_percentile
+        , 0 AS lifetime_frequency_percentile
+        , 0 AS lifetime_monetary_percentile
+        , 0 AS RFM_score
+        , 'Undefined' AS customer_segment
+
+    UNION ALL
+    SELECT
+        -1 AS customer_key
+        , '2012-01-01' AS last_active_date
+        , '2012-01-01' AS start_month
+        , '2012-01-01' AS end_month
+        , 'Invalid' AS does_buy_in_last_12_months
+        , -1 AS lifetime_recency
+        , -1 AS lifetime_monetary
+        , -1 AS last_12_months_monetary
+        , -1 AS lifetime_frequency
+        , -1 AS last_12_months_frequency
+        , -1 AS lifetime_recency_percent
+        , -1 AS lifetime_frequency_percent
+        , -1 AS lifetime_monetary_percent
+        , -1 AS lifetime_recency_percentile
+        , -1 AS lifetime_frequency_percentile
+        , -1 AS lifetime_monetary_percentile
+        , -1 AS RFM_score
+        , 'Invalid' AS customer_segment
+)
+
+    SELECT
+        customer_key
+        , last_active_date
+        , start_month
+        , end_month
+        , does_buy_in_last_12_months
+        , lifetime_recency
+        , lifetime_monetary
+        , last_12_months_monetary
+        , lifetime_frequency
+        , last_12_months_frequency
+        , lifetime_recency_percent
+        , lifetime_frequency_percent
+        , lifetime_monetary_percent
+        , lifetime_recency_percentile
+        , lifetime_frequency_percentile
+        , lifetime_monetary_percentile
+        , RFM_score
+        , customer_segment
+    FROM `dim_customer_attribute__add_values_undefined_invalid`
+
     
