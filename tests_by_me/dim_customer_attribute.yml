@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: dim_customer_attribute
+    columns:
+      - name: customer_key
+        tests: 
+          - unique
+          - not_null
+
+      - name: last_active_date
+        tests:
+          - not_null
+
+      - name: start_month
+        tests:
+          - not_null
+
+      - name: end_month
+        tests:
+          - not_null
+
+      - name: does_buy_in_last_12_months
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['Does Buy', 'Does Not Buy']
+              config:
+                where: "does_buy_in_last_12_months NOT IN ('Undefined', 'Invalid')"
+
+      - name: lifetime_recency
+        tests:
+          - not_null
+
+      - name: lifetime_monetary
+        tests:
+          - not_null
+
+      - name: last_12_months_monetary
+        tests:
+          - not_null
+
+      - name: lifetime_frequency
+        tests:
+          - not_null
+
+      - name: last_12_months_frequency
+        tests:
+          - not_null
+
+      - name: lifetime_recency_percent
+        tests:
+          - not_null
+
+      - name: lifetime_frequency_percent
+        tests:
+          - not_null
+
+      - name: lifetime_monetary_percent
+        tests:
+          - not_null
+
+      - name: lifetime_recency_percentile
+        tests:
+          - not_null
+
+      - name: lifetime_frequency_percentile
+        tests:
+          - not_null
+
+      - name: lifetime_monetary_percentile
+        tests:
+          - not_null
+
+      - name: RFM_score
+        tests:
+          - not_null
+
+      - name: customer_segment
+        tests:
+          - not_null
+
