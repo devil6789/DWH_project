@@ -1,1 +1,0 @@
-Yêu cầu của `lesson-0211`: Tạo DBT test equal rowcount.

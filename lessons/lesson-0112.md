@@ -1,1 +1,0 @@
-Yêu cầu của `lesson-0112`: Sắp xếp lại các cột theo thứ tự đã thống nhất.

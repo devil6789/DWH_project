@@ -1,1 +1,0 @@
-Yêu cầu của `lesson-0108b`: Mở model [`dim_customer`](../models/analytics/dim_customer.sql), thêm dữ liệu `is_on_credit_hold`

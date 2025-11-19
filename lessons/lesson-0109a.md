@@ -1,1 +1,0 @@
-Yêu cầu của `lesson-0109a`: Mở model [`dim_product`](../models/analytics/dim_product.sql), xử lý null ở cột `brand_name`.
