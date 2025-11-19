@@ -4,7 +4,7 @@ Hello! I'm Sơn, and this is my project to show my data warehouse skills.
 
 ## 🎯 Knowledge & techniques that I achieved
 
-- Building a Data Warehouse from scratch
+- Building a Data Warehouse from scratch: làm sạch dữ liệu(rename, cast type, handle null), chuyển schema từ snowflake schema sang star schema, tính toán, tranform dữ liệu phục vụ cho quy trình làm báo cáo dễ dàng hơn
 - Designing data models following [Kimball's Dimensional Modeling techniques](https://www.goodreads.com/en/book/show/748203)
 - Implementing end-to-end data pipeline using DBT and SQL
 - Implementing data quality checks using DBT test
